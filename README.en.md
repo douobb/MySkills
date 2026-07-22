@@ -48,8 +48,9 @@ After each implementation cycle, first use `write-project-todo` to update comple
 
 Creates a minimal, technology-agnostic project scaffold in an empty directory:
 
-- Creates Chinese and English README files, `TODO.md`, `docs/PRD.md`, and `src/`.
-- Creates a generic `.gitignore` that excludes the local `TODO.md`.
+- Creates Chinese and English README files, `TODO.md`, `docs/PRD.md`, `docs/.gitkeep`, and `src/`.
+- Creates a generic `.gitignore` that excludes potentially private `TODO.md` and `docs/PRD.md` planning files by default; the PRD is tracked only when explicitly requested.
+- Explicitly reports the Git tracking status of TODO and PRD after initialization to prevent accidental disclosure of private product information.
 - Validates the directory first to avoid overwriting existing content.
 - Does not choose a language, framework, license, or package manager, and does not initialize Git.
 

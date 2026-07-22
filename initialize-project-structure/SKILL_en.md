@@ -1,6 +1,6 @@
 ---
 name: initialize-project-structure
-description: Initialize an empty directory with a minimal, technology-agnostic project structure containing blank Chinese and English README files, PRD and TODO files, documentation and source directories, a Git placeholder, and a generic .gitignore that always excludes TODO.md. Use only for empty-directory initialization; never modify an existing project, generate code, install packages, or initialize Git.
+description: Initialize an empty directory with a minimal, technology-agnostic project structure containing blank Chinese and English README files, PRD and TODO files, documentation and source directories, Git placeholders, and a generic .gitignore that excludes TODO.md and docs/PRD.md by default. Use only for empty-directory initialization; never modify an existing project, generate code, install packages, or initialize Git.
 ---
 
 # Initialize Project Structure
@@ -18,6 +18,7 @@ Create this structure in the current working directory:
 ├── TODO.md
 ├── .gitignore
 ├── docs/
+│   ├── .gitkeep
 │   └── PRD.md
 └── src/
     └── .gitkeep
@@ -30,10 +31,11 @@ README.md
 README.en.md
 TODO.md
 docs/PRD.md
+docs/.gitkeep
 src/.gitkeep
 ```
 
-Do not create `docs/.gitkeep`; `docs/PRD.md` already preserves the directory.
+`docs/.gitkeep` preserves the `docs/` directory while `docs/PRD.md` is excluded from Git.
 
 ## Workflow
 
@@ -64,11 +66,12 @@ After validation succeeds, complete all of the following:
 
 1. Create `docs/` and `src/`.
 2. Create all required blank files.
-3. Create `.gitignore` with exactly this generic content:
+3. By default, create `.gitignore` with this generic content:
 
 ```gitignore
 # Local project planning
 TODO.md
+docs/PRD.md
 
 # Environment variables and local secrets
 .env
@@ -97,7 +100,9 @@ coverage/
 .cache/
 ```
 
-`TODO.md` must appear as an exact standalone rule. Do not ignore `README.md`, `README.en.md`, `docs/`, `src/`, or `.gitignore`, and do not add language- or framework-specific rules.
+`TODO.md` and `docs/PRD.md` must appear as exact standalone rules to prevent internal tasks, product plans, or commercial information from entering a public repository accidentally. Omit the `docs/PRD.md` rule only when the user explicitly states in the initialization request that the PRD should be version-controlled or uploaded; never infer an intent to publish it. `TODO.md` must still be excluded.
+
+Do not ignore `README.md`, `README.en.md`, the entire `docs/` directory, `src/`, `.gitignore`, or `docs/.gitkeep`, and do not add language- or framework-specific rules.
 
 ### 3. Verify the result
 
@@ -105,20 +110,21 @@ Confirm that:
 
 - Every required directory and file exists.
 - Every required file except `.gitignore` is zero-length.
-- `.gitignore` contains the standalone `TODO.md` rule.
+- `.gitignore` contains the standalone `TODO.md` rule and, by default, the standalone `docs/PRD.md` rule.
+- `docs/.gitkeep` is not ignored and can preserve `docs/` while the PRD is excluded.
 - No unrequested entry was created and no existing content was modified.
 
 If `.git/` already existed and Git is available, optionally run:
 
 ```bash
-git check-ignore TODO.md
+git check-ignore TODO.md docs/PRD.md
 ```
 
 Do not initialize Git only to perform this check.
 
 ### 4. Report
 
-On success, show the required structure and confirm the blank files, `TODO.md` ignore rule, and absence of technology-specific content. You may suggest populating the files with README, PRD, or TODO skills, or selecting a license before public distribution; do not perform those follow-up actions automatically.
+On success, show the required structure and explicitly state that `TODO.md` and `docs/PRD.md` are excluded by `.gitignore` by default and will not be uploaded by ordinary Git commits, while `docs/.gitkeep` preserves the empty documentation directory. If the user explicitly requested PRD tracking, state that the PRD is not excluded but `TODO.md` remains local-only. Also confirm the blank files and absence of technology-specific content. You may suggest populating the files with README, PRD, or TODO skills, or selecting a license before public distribution; do not perform those follow-up actions automatically.
 
 On failure, list the existing entries and state that nothing was modified to avoid mixing with or overwriting an existing project.
 
@@ -131,4 +137,4 @@ On failure, list the existing entries and state that nothing was modified to avo
 
 ## Acceptance Criteria
 
-The task is complete only after the directory was validated first, the complete required structure was created, all blank files and `.gitignore` match the specification, no existing content was modified, and the result was verified and reported.
+The task is complete only after the directory was validated first, the complete required structure was created, all blank files and `.gitignore` match the specification, no existing content was modified, and the Git tracking status of both TODO and PRD was explicitly reported.

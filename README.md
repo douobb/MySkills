@@ -48,8 +48,9 @@ flowchart TD
 
 在空白目錄建立最小化、技術無關的專案骨架：
 
-- 建立中英文 README、`TODO.md`、`docs/PRD.md` 與 `src/`。
-- 建立通用 `.gitignore`，並排除本機規劃檔 `TODO.md`。
+- 建立中英文 README、`TODO.md`、`docs/PRD.md`、`docs/.gitkeep` 與 `src/`。
+- 建立通用 `.gitignore`，預設排除可能含內部規劃的 `TODO.md` 與 `docs/PRD.md`；只有使用者明確要求時才追蹤 PRD。
+- 初始化完成時明確說明 TODO 與 PRD 的 Git 追蹤狀態，避免私密產品資訊意外公開。
 - 初始化前檢查目錄，避免覆寫既有內容。
 - 不選擇程式語言、框架、授權或套件管理工具，也不初始化 Git。
 

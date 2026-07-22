@@ -1,4 +1,4 @@
 interface:
   display_name: "初始化專案架構"
-  short_description: "在空白目錄安全建立最小且技術無關的通用專案初始架構"
-  default_prompt: "使用 $initialize-project-structure 在目前空白目錄建立最小化專案架構。"
+  short_description: "安全建立專案骨架，並預設保護本機 TODO 與 PRD"
+  default_prompt: "使用 $initialize-project-structure 在目前空白目錄建立最小化專案架構，並預設排除本機 TODO 與 PRD。"
