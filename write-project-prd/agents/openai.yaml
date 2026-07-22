@@ -1,0 +1,4 @@
+interface:
+  display_name: "撰寫專案 PRD"
+  short_description: "根據需求與既有文件建立或增量更新可驗證的產品需求文件"
+  default_prompt: "使用 $write-project-prd 根據目前需求與專案內容建立或更新 PRD。"

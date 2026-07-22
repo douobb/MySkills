@@ -1,0 +1,4 @@
+interface:
+  display_name: "撰寫專案 TODO"
+  short_description: "根據 PRD 與儲存庫狀態建立可執行且可驗證的本機實作規劃"
+  default_prompt: "使用 $write-project-todo 根據目前 PRD 與儲存庫狀態建立或更新 TODO 實作規劃。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "撰寫專案 README"
+  short_description: "根據儲存庫實作建立並同步繁體中文與英文 README 文件"
+  default_prompt: "使用 $write-project-readme 根據目前儲存庫內容建立或同步中英文 README。"
