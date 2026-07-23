@@ -13,7 +13,7 @@
 | `write-project-todo` | 自行撰寫 | 將需求轉換成可執行、可驗證的本機實作規劃 |
 | `write-project-readme` | 自行撰寫 | 根據儲存庫事實同步維護中英文 README |
 | `manage-project-docs` | 自行撰寫 | 分類、整合並檢查 docs 的獨立公開價值 |
-| `manage-project-git` | 自行撰寫 | 安全初始化 Git，統一檢查、提交與推送流程 |
+| `manage-project-git` | 自行撰寫 | 依風險分級安全初始化 Git，統一精簡提交與推送流程 |
 | `code-review` | 外部 Skill 經個人微調 | 原始來源目前未確認；僅進行審查，不直接修改程式碼 |
 | `start-refactor` | 外部 Skill 經個人微調 | 原始來源目前未確認；將審查建議轉換成漸進式重構 |
 | `ui-ux-pro-max` | 外部 Skill | 來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)，需另外安裝 |
@@ -99,13 +99,14 @@ flowchart TD
 
 ### `manage-project-git`
 
-統一首次 Git 初始化與既有儲存庫的提交上傳流程：
+依風險分級統一首次 Git 初始化與既有儲存庫的提交上傳流程：
 
-- 初始化前檢查目錄、敏感資訊、忽略規則、初始分支與遠端設定。
-- 提交前逐檔檢查機密、多餘產物、文件同步狀態與品質驗證，並以精確路徑暫存。
-- 可依變更呼叫 README、TODO、PRD 或文件管理 Skill；其他 Skill 修改後重新執行完整檢查。
-- 推送前 fetch 並比較 ahead／behind；發現落後、分歧、衝突或驗證錯誤時停止，提出方案由使用者選擇。
-- 禁止自動清理工作樹、改寫歷史或強制推送；完成後驗證本機與遠端 commit 一致。
+- 一般模式以一次狀態檢查、針對性敏感掃描、必要驗證、精確暫存、一次 fetch 及推送核對完成低風險變更。
+- 首次初始化、不明檔案、二進位／大型產物、私有文件或高風險程式碼改用加強模式。
+- 檔案、index、HEAD 或 remote 未改變時不重複掃描、驗證與 fetch，也不逐一回報無異常檔案大小。
+- 可依變更呼叫 README、TODO、PRD、文件管理或程式碼審查 Skill，修改後只重跑受影響檢查。
+- 發現機密、既有混合暫存、版本分歧、衝突或驗證錯誤時停止，提出方案由使用者選擇；禁止自動改寫歷史或強制推送。
+- 三種模式的完整程序分別放在 `references/` 中；主 Skill 只負責風險判定、共通底線與載入路由。
 
 ### `code-review`
 
@@ -147,7 +148,7 @@ UI/UX 設計輔助 Skill，來源為 [nextlevelbuilder/ui-ux-pro-max-skill](http
 └── README.en.md
 ```
 
-自製雙語 Skill 目錄包含中文 `SKILL.md`、英文 `SKILL_en.md`，以及供 Codex 介面使用的 `agents/openai.yaml`。
+自製雙語 Skill 目錄包含中文 `SKILL.md`、英文 `SKILL_en.md`，以及供 Codex 介面使用的 `agents/openai.yaml`；需要漸進揭露的 Skill 另以 `references/` 保存按需載入的雙語規則。
 
 ## 共同設計原則
 

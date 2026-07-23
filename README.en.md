@@ -13,7 +13,7 @@ This repository collects personal Codex Skills for project and Git initializatio
 | `write-project-todo` | Authored for this repository | Converts requirements into an actionable, verifiable local implementation plan |
 | `write-project-readme` | Authored for this repository | Maintains synchronized Chinese and English README files from repository facts |
 | `manage-project-docs` | Authored for this repository | Classifies, consolidates, and checks independent publication value for docs |
-| `manage-project-git` | Authored for this repository | Safely initializes Git and standardizes inspection, commit, and push workflows |
+| `manage-project-git` | Authored for this repository | Uses risk-based depth to safely initialize Git and streamline commit-and-push work |
 | `code-review` | External skill with personal modifications | The original source is currently unconfirmed; reviews code without editing it |
 | `start-refactor` | External skill with personal modifications | The original source is currently unconfirmed; turns review findings into incremental refactoring |
 | `ui-ux-pro-max` | External skill | From [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill); install separately |
@@ -99,13 +99,14 @@ Uses a two-phase workflow to organize development records and maintained documen
 
 ### `manage-project-git`
 
-Standardizes first-time Git initialization and commit-and-upload work in an existing repository:
+Uses risk-based depth for first-time Git initialization and commit-and-upload work in an existing repository:
 
-- Before initialization, inspects the directory, sensitive information, ignore rules, initial branch, and remote setup.
-- Before committing, reviews secrets, extraneous artifacts, documentation freshness, and quality checks file by file, then stages exact paths.
-- May invoke the README, TODO, PRD, or documentation-management skills as needed and reruns all checks after they modify files.
-- Fetches and compares ahead/behind state before pushing; stops on behind, diverged, conflicted, or failed states and lets the user choose a resolution.
-- Never cleans the worktree, rewrites history, or force-pushes automatically; verifies that local and remote commits match afterward.
+- Normal Mode handles low-risk changes with one state check, targeted secret scanning, relevant verification, exact staging, one fetch, and post-push comparison.
+- First initialization, unfamiliar files, binary or large artifacts, private documentation, and high-risk code use Enhanced Mode.
+- Scans, verification, fetches, and routine file-size reports are not repeated while files, index, HEAD, and remote remain unchanged.
+- May invoke README, TODO, PRD, documentation-management, or code-review skills, then reruns only affected checks.
+- Stops on secrets, mixed pre-existing staged content, version divergence, conflicts, or failed verification and lets the user choose; never rewrites history or force-pushes automatically.
+- Complete procedures for the three modes live under `references/`; the main skill handles only risk selection, shared baselines, and loading routes.
 
 ### `code-review`
 
@@ -147,7 +148,7 @@ A UI/UX design assistance skill from [nextlevelbuilder/ui-ux-pro-max-skill](http
 └── README.en.md
 ```
 
-Each self-authored bilingual skill directory contains a Chinese `SKILL.md`, an English `SKILL_en.md`, and `agents/openai.yaml` for the Codex interface.
+Each self-authored bilingual skill directory contains a Chinese `SKILL.md`, an English `SKILL_en.md`, and `agents/openai.yaml` for the Codex interface. Skills that use progressive disclosure also keep bilingual, on-demand rules under `references/`.
 
 ## Shared Design Principles
 
