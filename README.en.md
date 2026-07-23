@@ -2,7 +2,7 @@
 
 [繁體中文](README.md)
 
-This repository collects personal Codex Skills for project initialization, requirements, implementation planning, README and project-document maintenance, code review, refactoring, and a separately installed UI/UX design skill.
+This repository collects personal Codex Skills for project and Git initialization, requirements, implementation planning, README and project-document maintenance, commits and uploads, code review, refactoring, and a separately installed UI/UX design skill.
 
 ## Skill Sources
 
@@ -13,6 +13,7 @@ This repository collects personal Codex Skills for project initialization, requi
 | `write-project-todo` | Authored for this repository | Converts requirements into an actionable, verifiable local implementation plan |
 | `write-project-readme` | Authored for this repository | Maintains synchronized Chinese and English README files from repository facts |
 | `manage-project-docs` | Authored for this repository | Classifies, consolidates, and checks independent publication value for docs |
+| `manage-project-git` | Authored for this repository | Safely initializes Git and standardizes inspection, commit, and push workflows |
 | `code-review` | External skill with personal modifications | The original source is currently unconfirmed; reviews code without editing it |
 | `start-refactor` | External skill with personal modifications | The original source is currently unconfirmed; turns review findings into incremental refactoring |
 | `ui-ux-pro-max` | External skill | From [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill); install separately |
@@ -21,7 +22,7 @@ Except for the skills explicitly identified as external or adapted above, the re
 
 ## Project Workflow
 
-The four core self-authored skills first establish the project structure and plan. During development, TODO maintenance, implementation verification, and README updates form a continuous loop, with code review, refactoring, and project-document organization added when needed:
+The core self-authored skills first establish the project structure and plan. During development, TODO maintenance, implementation verification, and README updates form a continuous loop, with code review, refactoring, project-document organization, and Git delivery added when needed:
 
 ```mermaid
 flowchart TD
@@ -36,12 +37,14 @@ flowchart TD
     BUILD --> TODO_SYNC["write-project-todo<br/>Update status, next steps, and blockers"]
     TODO_SYNC --> README_SYNC["write-project-readme<br/>Synchronize verified behavior"]
     README_SYNC --> NEXT{"Begin the next iteration"}
+    README_SYNC -.-> GIT["manage-project-git<br/>Inspect, commit, and push"]
+    GIT --> NEXT
 
     NEXT -->|"Plan the next work"| TODO
     NEXT -->|"Requirements need revision"| PRD
 ```
 
-After each implementation cycle, first use `write-project-todo` to update completion status, next steps, and blockers, then use `write-project-readme` to synchronize verified behavior into both README files. When development-generated documents need cleanup, use `manage-project-docs` separately to audit `docs/` and organize it after user approval. The next iteration can return directly to TODO planning; when product requirements need revision, return to the PRD first and then replan the TODO.
+After each implementation cycle, first use `write-project-todo` to update completion status, next steps, and blockers, then use `write-project-readme` to synchronize verified behavior into both README files. When development-generated documents need cleanup, use `manage-project-docs` separately to audit `docs/` and organize it after user approval. At delivery time, `manage-project-git` can inspect secrets, extraneous files, documentation synchronization, and remote versions before committing and pushing. The next iteration can return directly to TODO planning; when product requirements need revision, return to the PRD first and then replan the TODO.
 
 ## Skills
 
@@ -94,6 +97,16 @@ Uses a two-phase workflow to organize development records and maintained documen
 - Places approved private documents under `docs/private/` and adds an ignore rule while disclosing that tracked files and Git history remain unaffected.
 - Treats `docs/private/` as no substitute for secret storage; real credentials stop the workflow and require revocation or rotation guidance.
 
+### `manage-project-git`
+
+Standardizes first-time Git initialization and commit-and-upload work in an existing repository:
+
+- Before initialization, inspects the directory, sensitive information, ignore rules, initial branch, and remote setup.
+- Before committing, reviews secrets, extraneous artifacts, documentation freshness, and quality checks file by file, then stages exact paths.
+- May invoke the README, TODO, PRD, or documentation-management skills as needed and reruns all checks after they modify files.
+- Fetches and compares ahead/behind state before pushing; stops on behind, diverged, conflicted, or failed states and lets the user choose a resolution.
+- Never cleans the worktree, rewrites history, or force-pushes automatically; verifies that local and remote commits match afterward.
+
 ### `code-review`
 
 Reviews code for correctness, security, performance, architecture, and maintainability:
@@ -127,6 +140,7 @@ A UI/UX design assistance skill from [nextlevelbuilder/ui-ux-pro-max-skill](http
 ├── write-project-todo/
 ├── write-project-readme/
 ├── manage-project-docs/
+├── manage-project-git/
 ├── code-review/
 ├── start-refactor/
 ├── README.md

@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-本儲存庫整理個人使用的 Codex Skills，涵蓋專案初始化、需求文件、實作規劃、README 與專案文件維護、程式碼審查、重構，以及需另外安裝的 UI/UX 設計 Skill。
+本儲存庫整理個人使用的 Codex Skills，涵蓋專案與 Git 初始化、需求文件、實作規劃、README 與專案文件維護、提交上傳、程式碼審查、重構，以及需另外安裝的 UI/UX 設計 Skill。
 
 ## Skill 來源
 
@@ -13,6 +13,7 @@
 | `write-project-todo` | 自行撰寫 | 將需求轉換成可執行、可驗證的本機實作規劃 |
 | `write-project-readme` | 自行撰寫 | 根據儲存庫事實同步維護中英文 README |
 | `manage-project-docs` | 自行撰寫 | 分類、整合並檢查 docs 的獨立公開價值 |
+| `manage-project-git` | 自行撰寫 | 安全初始化 Git，統一檢查、提交與推送流程 |
 | `code-review` | 外部 Skill 經個人微調 | 原始來源目前未確認；僅進行審查，不直接修改程式碼 |
 | `start-refactor` | 外部 Skill 經個人微調 | 原始來源目前未確認；將審查建議轉換成漸進式重構 |
 | `ui-ux-pro-max` | 外部 Skill | 來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)，需另外安裝 |
@@ -21,7 +22,7 @@
 
 ## 專案工作流程
 
-四個核心自製 Skill 先建立專案骨架與規劃；進入開發後，TODO、實作驗證與 README 形成持續循環。程式碼審查、重構及專案文件整理可在需要時加入：
+核心自製 Skill 先建立專案骨架與規劃；進入開發後，TODO、實作驗證與 README 形成持續循環。程式碼審查、重構、文件整理及 Git 提交上傳可在需要時加入：
 
 ```mermaid
 flowchart TD
@@ -36,12 +37,14 @@ flowchart TD
     BUILD --> TODO_SYNC["write-project-todo<br/>更新狀態、下一步與阻塞"]
     TODO_SYNC --> README_SYNC["write-project-readme<br/>同步已驗證內容"]
     README_SYNC --> NEXT{"進入下一輪"}
+    README_SYNC -.-> GIT["manage-project-git<br/>檢查、提交與推送"]
+    GIT --> NEXT
 
     NEXT -->|"安排下一輪工作"| TODO
     NEXT -->|"需求需要調整"| PRD
 ```
 
-每輪實作後，先使用 `write-project-todo` 更新完成狀態、下一步與阻塞事項，再使用 `write-project-readme` 將已驗證的實作同步到中英文 README。需要清理開發過程產生的文件時，可另外使用 `manage-project-docs` 盤點 `docs/`，並在使用者確認後整理。下一輪可直接回到 TODO 安排工作；若產品需求需要調整，則先回到 PRD，再重新規劃 TODO。
+每輪實作後，先使用 `write-project-todo` 更新完成狀態、下一步與阻塞事項，再使用 `write-project-readme` 將已驗證的實作同步到中英文 README。需要清理開發過程產生的文件時，可另外使用 `manage-project-docs` 盤點 `docs/`，並在使用者確認後整理。準備交付時可使用 `manage-project-git` 檢查敏感資訊、多餘檔案、文件同步與遠端版本，再提交及推送。下一輪可直接回到 TODO 安排工作；若產品需求需要調整，則先回到 PRD，再重新規劃 TODO。
 
 ## Skills
 
@@ -94,6 +97,16 @@ flowchart TD
 - 將核准的不公開文件放入 `docs/private/` 並加入 `.gitignore`，同時揭露已追蹤檔案與 Git 歷史不受忽略規則保護的風險。
 - `docs/private/` 不是機密保管庫；發現真實憑證時停止處理並建議撤銷或輪替。
 
+### `manage-project-git`
+
+統一首次 Git 初始化與既有儲存庫的提交上傳流程：
+
+- 初始化前檢查目錄、敏感資訊、忽略規則、初始分支與遠端設定。
+- 提交前逐檔檢查機密、多餘產物、文件同步狀態與品質驗證，並以精確路徑暫存。
+- 可依變更呼叫 README、TODO、PRD 或文件管理 Skill；其他 Skill 修改後重新執行完整檢查。
+- 推送前 fetch 並比較 ahead／behind；發現落後、分歧、衝突或驗證錯誤時停止，提出方案由使用者選擇。
+- 禁止自動清理工作樹、改寫歷史或強制推送；完成後驗證本機與遠端 commit 一致。
+
 ### `code-review`
 
 針對正確性、安全性、效能、架構與可維護性進行程式碼審查：
@@ -127,6 +140,7 @@ UI/UX 設計輔助 Skill，來源為 [nextlevelbuilder/ui-ux-pro-max-skill](http
 ├── write-project-todo/
 ├── write-project-readme/
 ├── manage-project-docs/
+├── manage-project-git/
 ├── code-review/
 ├── start-refactor/
 ├── README.md
