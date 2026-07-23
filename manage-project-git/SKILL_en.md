@@ -22,10 +22,10 @@ Resolve the Git root first. Use Workflow A when it is not a repository or first-
 | Mode | Conditions |
 |---|---|
 | Normal | Existing repository; small, single-purpose text or source changes; known remote and upstream; no abnormal staged content or high-risk signal |
-| Enhanced | First initialization; many or unfamiliar untracked files; binary, large, or generated files; environment, authentication, or private documentation; broad or high-risk code; mixed-purpose changes; unreviewed outgoing commits; unclear remote or upstream |
+| Enhanced | First initialization; many untracked files with unconfirmed sources or other unfamiliar files; binary, large, or generated files; environment, authentication, or private documentation; broad or high-risk code; mixed-purpose changes; unreviewed outgoing commits; unclear remote or upstream |
 | Stop | Possible secret; unrelated pre-existing staged content; detached HEAD; active Git operation; conflicts; material failed verification; remote mismatch; local behind or diverged state; authentication, permission, hook, or push error |
 
-Use the highest-risk applicable mode. Do not select Enhanced merely because one untracked file exists; consider count, type, source, and task relationship. For inspection or preparation only, stop after the pre-commit report.
+Use the highest-risk applicable mode. Do not select Enhanced solely because untracked files exist or are numerous. Small, normal-size text files created during the current task may remain in Normal Mode when their source and purpose are clear and their content has already been inspected. For other cases, consider type, source, task relationship, and risk. For inspection or preparation only, stop after the pre-commit report.
 
 ## Required References
 
