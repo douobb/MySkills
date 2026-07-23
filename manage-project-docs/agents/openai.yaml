@@ -1,4 +1,4 @@
 interface:
   display_name: "管理專案文件"
-  short_description: "分類、整理並保護 docs 文件，確認後才執行刪除與整合"
-  default_prompt: "使用 $manage-project-docs 盤點 docs 文件，先提出分類與整理方案，取得我確認後再執行。"
+  short_description: "分類、整理並檢查 docs 是否具獨立公開價值，確認後才執行"
+  default_prompt: "使用 $manage-project-docs 盤點 docs，檢查文件能否脫離私有 TODO／PRD 獨立閱讀，取得我確認後再整理。"

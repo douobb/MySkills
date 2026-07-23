@@ -12,7 +12,7 @@ This repository collects personal Codex Skills for project initialization, requi
 | `write-project-prd` | Authored for this repository | Creates or incrementally updates product requirements |
 | `write-project-todo` | Authored for this repository | Converts requirements into an actionable, verifiable local implementation plan |
 | `write-project-readme` | Authored for this repository | Maintains synchronized Chinese and English README files from repository facts |
-| `manage-project-docs` | Authored for this repository | Classifies, consolidates, and protects project documents under docs |
+| `manage-project-docs` | Authored for this repository | Classifies, consolidates, and checks independent publication value for docs |
 | `code-review` | External skill with personal modifications | The original source is currently unconfirmed; reviews code without editing it |
 | `start-refactor` | External skill with personal modifications | The original source is currently unconfirmed; turns review findings into incremental refactoring |
 | `ui-ux-pro-max` | External skill | From [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill); install separately |
@@ -88,6 +88,7 @@ Creates or synchronizes `README.md` and `README.en.md` from actual repository co
 Uses a two-phase workflow to organize development records and maintained documentation under `docs/`:
 
 - Phase one is read-only and reports each file's summary, classification, Git state, and proposed action as useless, needs organization, organized public, or organized private.
+- A document qualifies as organized public only when it is independently understandable without private TODOs or PRDs, serves a defined audience, contains verified content, and has a public navigation entry.
 - Deletes obsolete files, merges fragments, moves documents, or updates links only after the user approves the exact plan.
 - Follows existing documentation conventions first; it may use Diátaxis and project needs to choose directories, but never creates empty categories or content-free documents.
 - Places approved private documents under `docs/private/` and adds an ignore rule while disclosing that tracked files and Git history remain unaffected.

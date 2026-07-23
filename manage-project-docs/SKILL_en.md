@@ -1,6 +1,6 @@
 ---
 name: manage-project-docs
-description: Inspect, classify, organize, and protect files under a project's docs/ directory. Use for logs, drafts, decision records, guides, references, and private plans created by Codex or during development. First perform a read-only audit that summarizes every file and classifies it as useless, needs organization, organized public, or organized private. Delete, merge, move, create docs/private/, or update .gitignore only after the user explicitly approves the exact plan.
+description: Inspect, classify, organize, and protect files under a project's docs/ directory. Use for logs, drafts, decisions, specifications, guides, references, and private plans created by Codex or during development. First perform a read-only audit and test whether each file remains understandable without unpublished TODOs, PRDs, or internal TASK, FR, and Phase context. Only verified documents with a defined audience, independent reading value, and a complete publication-gate pass qualify as organized public; rewrite the rest into useful public documentation or default them to private. Delete, merge, move, or update .gitignore only after explicit approval.
 ---
 
 # Manage Project Documentation
@@ -14,6 +14,8 @@ Keep only documentation with lasting value under `docs/`, without treating trans
 - Preserve unique context about architectural decisions, constraints, trade-offs, and rationale. Code often shows what exists but not why it was chosen.
 - Do not create empty category directories, template documents, or speculative content. A small documentation set may remain directly under `docs/`.
 - Evaluate publication suitability separately from writing quality. A polished document is not automatically public.
+- Public documentation must remain understandable without ignored, untracked, or private TODOs, PRDs, and internal plans, and must clearly answer who should read it and what value they gain.
+- Default a document to private when independent public value cannot be demonstrated. Formal formatting, length, or unique content alone does not justify publication.
 - Treat `docs/private/` as protection against accidental commits, not as secure secret storage. Never move tokens, passwords, private keys, or other credentials there as a remedy.
 - Limit the scope to `docs/` unless the user explicitly expands it. Do not organize root READMEs, issues, wikis, or source-code documentation by default.
 
@@ -28,6 +30,10 @@ Inspect:
 - Git tracking and ignore state; when available, inspect `git status`, `git ls-files`, and `git check-ignore`.
 - Links or references to each target file from READMEs, source code, configuration, and other documentation.
 - Duplication, conflicts, version relationships, and likely sources of truth.
+- Whether each document depends on ignored, untracked, private, or otherwise unpublished TODOs, PRDs, or other files.
+- Undefined internal markers such as `TASK-*`, `FR-*`, `NFR-*`, `DEC-*`, Checkpoint, Sprint, Milestone, Phase, or stage labels.
+- Whether content describes implemented and verifiable behavior, an explicitly public roadmap, or an unimplemented internal contract.
+- Whether a public document is reachable from a README, documentation index, or another public entry point instead of remaining orphaned.
 
 Do not follow symbolic links outside the project. Use appropriate tools to read or render supported binary documents. Mark unreadable files as needing confirmation; never classify them as useless without reliable inspection.
 
@@ -36,19 +42,35 @@ Do not follow symbolic links outside the project. Use appropriate tools to read 
 | Classification | Criteria | Default action |
 |---|---|---|
 | Useless | Pure transient logs, duplicate output, or obsolete material with no unique information and no reasonable value to users or future development | Propose deletion, but retain it |
-| Needs organization | Mixes useful content with noise, overlaps other documents, contains fragmented information, or has an unclear location or audience | Propose sources, destination, and merge plan |
-| Organized public | Clear and accurate for its intended audience, contains nothing that should remain private, and is maintainable as public documentation | Keep it or move it to an appropriate public location |
-| Organized private | Useful and complete, but contains internal product plans, commercial considerations, unpublished decisions, or other material unsuitable for publication | Propose moving it to `docs/private/` and excluding it from Git |
+| Needs organization | Contains material worth retaining, but mixes noise, private tracking markers, unverified plans, missing audience context, or dependencies on files that will not be published | Propose a semantic public rewrite when viable; otherwise propose private consolidation |
+| Organized public | Clear, accurate, verified, independently understandable, valuable to a defined audience, and passes every publication-gate condition | Keep it or move it to an appropriate public location |
+| Organized private | Useful and complete, but its main value depends on internal tracking, product phases, acceptance matrices, commercial considerations, unpublished decisions, or other private context | Propose moving it to `docs/private/` and excluding it from Git |
 
-If a document contains any unique information with continuing value, do not classify it as useless; classify it as needing organization. When accuracy, purpose, or sensitivity is uncertain, state the uncertainty and ask the user to decide.
+If a document contains any unique information with continuing value, do not classify it as useless; classify it as needs organization or organized private according to completeness and publication suitability. When accuracy, purpose, or sensitivity is uncertain, state the uncertainty and ask the user to decide.
 
-### 3. Report and stop
+### 3. Apply the publication gate
+
+Classify a document as organized public only when all conditions below are true:
+
+1. It defines its intended audience, purpose, and what the reader can accomplish or understand afterward.
+2. It remains understandable without unpublished TODOs, PRDs, private documents, or internal plans.
+3. It contains no undefined internal TASK, FR, NFR, DEC, Checkpoint, Sprint, Milestone, Phase, or stage identifiers.
+4. Any retained version, phase, or identifier is defined publicly and provides real value to the reader.
+5. It distinguishes current behavior verified by code, tests, configuration, or release information from public limitations and future plans; it never presents an unimplemented contract as an existing capability.
+6. It reveals no private product strategy, commercial considerations, internal acceptance relationships, or security-sensitive information.
+7. It is discoverable from a README, public index, or another public document and includes required cross-links.
+8. It has continuing maintenance value for users or new developers, rather than merely proving what Codex, one task, or one development phase did.
+
+If any condition fails, the document is not organized public. Classify it as needs organization when it can be rewritten into an independent and useful public document without exposing private context. Classify it as organized private when removing that context would destroy its primary value. When independent public value cannot be demonstrated, default to organized private.
+
+### 4. Report and stop
 
 List every file under one of the four classifications. For each file, report at least:
 
 - Relative path.
 - A one- or two-sentence summary; use a high-level summary that does not disclose details for sensitive files.
-- Classification and rationale.
+- Classification and rationale, including publication-gate pass and failure items.
+- Dependencies on private or unpublished files, plus undefined internal tracking markers.
 - Tracked, untracked, or ignored Git state.
 - Proposed action, destination, and main risks.
 
@@ -56,6 +78,7 @@ Also provide:
 
 - The exact files proposed for deletion.
 - For every merge, the source files, target file, content to retain, and disposition of each source.
+- For every file that needs organization, evaluate both semantic public rewriting and private consolidation, recommend one, and list failed gate conditions when a public rewrite is not viable.
 - The smallest proposed `docs/` structure, listing only directories needed for this task.
 - Proposed `.gitignore` additions or corrections.
 - Conflicts, sensitivity questions, or factual uncertainty that require user judgment.
@@ -86,8 +109,19 @@ docs/
 
 Create a directory only when at least one approved document will occupy it. Do not over-nest a small project. Where practical, make reference documentation mirror the structure of the system it describes. Create or update `docs/README.md` or an index only when it materially improves navigation; never create an empty index.
 
+Public organization is not mechanical identifier removal. When performing a public rewrite:
+
+1. Define the intended audience, purpose, scope, and current status first.
+2. Replace tracking statements such as `maps to TASK-003` with independently understandable domain meaning, such as “This section defines Session state transitions,” instead of merely deleting the identifier.
+3. Convert an internal Phase into a publicly defined version or capability status only when readers need it; otherwise move it to private documentation.
+4. Describe current behavior only when supported by code, tests, configuration, or formal release information. Keep unverified specifications private or place them explicitly in a published roadmap.
+5. Create the smallest useful public projection from private sources without copying private acceptance relationships, schedules, commercial context, or unnecessary detail.
+6. Add required background, terminology, and public links, then create an entry point from a README or public index.
+7. Reapply the publication gate. If any condition still fails, move the document to private instead of forcing publication.
+
 ### 3. Organize private documentation
 
+- Default internal product phases, TASK or FR traceability, acceptance matrices, Codex work evidence, and complete specifications that cannot be understood without private PRDs or TODOs to private documentation.
 - Place approved organized private documents under `docs/private/`, and keep an exact standalone `docs/private/` rule in the repository-root `.gitignore`.
 - Do not create `docs/private/.gitkeep`; the directory itself must not be committed.
 - Preserve all existing `.gitignore` content and add only missing rules without duplication.
@@ -115,7 +149,10 @@ Before completion, verify:
 
 - Every original document has a final classification or an explicit unresolved status.
 - Every deletion, merge, move, and Git change is within the approved scope.
+- Every public document passes all publication-gate conditions, provides clear reader value, and has a public entry point.
+- No public document depends on ignored, untracked, private, or otherwise unpublished files.
 - Public documentation contains no identified private planning, credentials, or unnecessary internal records.
+- TASK, FR, NFR, DEC, Checkpoint, Sprint, Milestone, Phase, and stage markers were scanned; only publicly defined identifiers useful to readers remain.
 - `docs/private/` is ignored and exceptions for tracked files are disclosed accurately.
 - No empty category directories, duplicate documents, or blank indexes were created.
 - Relative links, images, documentation navigation, and major references still work after moves.

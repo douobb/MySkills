@@ -12,7 +12,7 @@
 | `write-project-prd` | 自行撰寫 | 建立或增量更新產品需求文件 |
 | `write-project-todo` | 自行撰寫 | 將需求轉換成可執行、可驗證的本機實作規劃 |
 | `write-project-readme` | 自行撰寫 | 根據儲存庫事實同步維護中英文 README |
-| `manage-project-docs` | 自行撰寫 | 分類、整合與保護 docs 內的專案文件 |
+| `manage-project-docs` | 自行撰寫 | 分類、整合並檢查 docs 的獨立公開價值 |
 | `code-review` | 外部 Skill 經個人微調 | 原始來源目前未確認；僅進行審查，不直接修改程式碼 |
 | `start-refactor` | 外部 Skill 經個人微調 | 原始來源目前未確認；將審查建議轉換成漸進式重構 |
 | `ui-ux-pro-max` | 外部 Skill | 來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)，需另外安裝 |
@@ -88,6 +88,7 @@ flowchart TD
 以兩階段流程整理 `docs/` 內的開發紀錄與正式文件：
 
 - 第一階段只讀取並逐檔回報簡介、分類、Git 狀態及建議動作，分為無作用、需整理、已整理公開與已整理不公開。
+- 只有能脫離私有 TODO／PRD 獨立理解、具明確讀者與閱讀價值、內容已驗證且有公開入口的文件，才能列為已整理公開。
 - 只有使用者確認精確方案後，才刪除無用檔案、整合片段、移動文件或更新連結。
 - 優先遵循現有文件慣例；可依 Diátaxis 與專案需求選擇目錄，但不建立空分類或無內容文件。
 - 將核准的不公開文件放入 `docs/private/` 並加入 `.gitignore`，同時揭露已追蹤檔案與 Git 歷史不受忽略規則保護的風險。
