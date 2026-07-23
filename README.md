@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-本儲存庫整理個人使用的 Codex Skills，涵蓋專案初始化、需求文件、實作規劃、README 維護、程式碼審查、重構，以及需另外安裝的 UI/UX 設計 Skill。
+本儲存庫整理個人使用的 Codex Skills，涵蓋專案初始化、需求文件、實作規劃、README 與專案文件維護、程式碼審查、重構，以及需另外安裝的 UI/UX 設計 Skill。
 
 ## Skill 來源
 
@@ -12,6 +12,7 @@
 | `write-project-prd` | 自行撰寫 | 建立或增量更新產品需求文件 |
 | `write-project-todo` | 自行撰寫 | 將需求轉換成可執行、可驗證的本機實作規劃 |
 | `write-project-readme` | 自行撰寫 | 根據儲存庫事實同步維護中英文 README |
+| `manage-project-docs` | 自行撰寫 | 分類、整合與保護 docs 內的專案文件 |
 | `code-review` | 外部 Skill 經個人微調 | 原始來源目前未確認；僅進行審查，不直接修改程式碼 |
 | `start-refactor` | 外部 Skill 經個人微調 | 原始來源目前未確認；將審查建議轉換成漸進式重構 |
 | `ui-ux-pro-max` | 外部 Skill | 來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)，需另外安裝 |
@@ -20,7 +21,7 @@
 
 ## 專案工作流程
 
-四個自製 Skill 先建立專案骨架與規劃；進入開發後，TODO、實作驗證與 README 形成持續循環。程式碼審查與重構可在需要時加入：
+四個核心自製 Skill 先建立專案骨架與規劃；進入開發後，TODO、實作驗證與 README 形成持續循環。程式碼審查、重構及專案文件整理可在需要時加入：
 
 ```mermaid
 flowchart TD
@@ -40,7 +41,7 @@ flowchart TD
     NEXT -->|"需求需要調整"| PRD
 ```
 
-每輪實作後，先使用 `write-project-todo` 更新完成狀態、下一步與阻塞事項，再使用 `write-project-readme` 將已驗證的實作同步到中英文 README。下一輪可直接回到 TODO 安排工作；若產品需求需要調整，則先回到 PRD，再重新規劃 TODO。
+每輪實作後，先使用 `write-project-todo` 更新完成狀態、下一步與阻塞事項，再使用 `write-project-readme` 將已驗證的實作同步到中英文 README。需要清理開發過程產生的文件時，可另外使用 `manage-project-docs` 盤點 `docs/`，並在使用者確認後整理。下一輪可直接回到 TODO 安排工作；若產品需求需要調整，則先回到 PRD，再重新規劃 TODO。
 
 ## Skills
 
@@ -82,6 +83,16 @@ flowchart TD
 - 區分已實作、規劃中與未確認內容。
 - 保留正確的人工內容並採增量更新，不虛構功能、版本、連結或測試結果。
 
+### `manage-project-docs`
+
+以兩階段流程整理 `docs/` 內的開發紀錄與正式文件：
+
+- 第一階段只讀取並逐檔回報簡介、分類、Git 狀態及建議動作，分為無作用、需整理、已整理公開與已整理不公開。
+- 只有使用者確認精確方案後，才刪除無用檔案、整合片段、移動文件或更新連結。
+- 優先遵循現有文件慣例；可依 Diátaxis 與專案需求選擇目錄，但不建立空分類或無內容文件。
+- 將核准的不公開文件放入 `docs/private/` 並加入 `.gitignore`，同時揭露已追蹤檔案與 Git 歷史不受忽略規則保護的風險。
+- `docs/private/` 不是機密保管庫；發現真實憑證時停止處理並建議撤銷或輪替。
+
 ### `code-review`
 
 針對正確性、安全性、效能、架構與可維護性進行程式碼審查：
@@ -114,6 +125,7 @@ UI/UX 設計輔助 Skill，來源為 [nextlevelbuilder/ui-ux-pro-max-skill](http
 ├── write-project-prd/
 ├── write-project-todo/
 ├── write-project-readme/
+├── manage-project-docs/
 ├── code-review/
 ├── start-refactor/
 ├── README.md
