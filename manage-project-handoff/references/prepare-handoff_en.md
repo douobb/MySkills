@@ -27,15 +27,16 @@ Never present an assistant-chosen method as a user instruction. Mark an instruct
 - Use `$write-project-prd` only when product requirements changed and the user requests an update.
 - Update `AGENTS.md` only after explicit confirmation that a rule is durable.
 
-After another skill edits files, recheck Git state and affected facts. The handoff must not trigger code implementation by itself.
+After another skill edits files, recheck Git state and affected facts. If a synchronization skill stops because a private document is tracked, a conflict exists, or authorization is missing, do not bypass it or claim synchronization; record the issue as a blocker with its proposed options. The handoff must not trigger code implementation by itself.
 
 ## 4. Establish the Private Boundary
 
 1. Follow an existing private-document convention; otherwise use `docs/private/HANDOFF.md`.
-2. Incrementally create `docs/private/` and ensure the root `.gitignore` contains a standalone `docs/private/` rule.
-3. Check whether the target is tracked or appeared in commit history. If tracked, stop and report untracking and history risks without changing the index.
-4. After writing, verify with `git check-ignore -v docs/private/HANDOFF.md`.
-5. If the recipient does not share the current workspace, confirm a user-selected secure transfer method. Without one, report the limitation and do not publish or stage the handoff.
+2. First inspect `docs/private/` and the standalone root `.gitignore` rule `docs/private/`. When both exist, reuse them unchanged.
+3. Before writing, check whether the target is tracked or appeared in commit history. If tracked, stop and report untracking and history risks without changing the index.
+4. If the rule exists but the directory is absent, create the directory. If the rule is missing, preserve existing `.gitignore` content and add it incrementally before creating the directory. Never duplicate the rule or create `.gitkeep`.
+5. After writing, verify with `git check-ignore -v docs/private/HANDOFF.md`.
+6. If the recipient does not share the current workspace, confirm a user-selected secure transfer method. Without one, report the limitation and do not publish or stage the handoff.
 
 When credentials or highly sensitive values appear, do not copy or summarize them. Record only the risk category and the need to revoke, rotate, or remove them from the project.
 

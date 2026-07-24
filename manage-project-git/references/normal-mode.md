@@ -6,7 +6,7 @@
 
 1. 一次確認 Git root、branch、HEAD、工作樹、staged／unstaged／untracked、remote／upstream、進行中的 Git 操作及本次範圍。
 2. 檢查既有 staged 內容。若包含範圍外檔案，切換停止模式；不得擅自 unstage 或一併提交。
-3. 只掃描預計提交的變更與檔案；若只推送既有 commit，亦檢查尚未存在於目標遠端的 outgoing commits。
+3. 只掃描預計提交的變更與檔案；若只推送既有 commit，亦檢查尚未存在於目標遠端的 outgoing commits，並確認 `TODO.md`、`docs/PRD.md`、`docs/private/` 沒有意外包含其中。
 4. 套用敏感資訊與文件底線，只執行相關測試、lint、build 或 Skill 驗證。沒有實質變更時不得建立空 commit，除非使用者明確要求且理解用途。
 5. 確認有效的 `user.name`、`user.email` 與簽署規範，不擅自修改 global 設定。
 6. 以精確路徑暫存，檢查 staged 檔案、完整 staged diff 與 `git diff --cached --check`。

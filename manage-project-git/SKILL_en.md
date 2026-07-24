@@ -41,6 +41,8 @@ References are not optional summaries. If the mode changes, read the new mode fi
 
 At minimum, inspect for `.env`, credentials, private keys, cloud authentication, cookies, sessions, connection strings, credential-bearing URLs, API keys, tokens, passwords, personal or customer data, internal endpoints, commercial plans, unpublished PRDs or TODOs, and `docs/private/`. A possible secret switches immediately to Stop Mode.
 
+Treat `TODO.md`, `docs/PRD.md`, and `docs/private/` as protected paths. Before every staging action, determine their ignored, tracked, staged, and outgoing state. A generic “upload everything” request does not publish them. Include a PRD or TODO only when the user names the exact path and its content passes review. Never upload `docs/private/` or `HANDOFF.md` directly; create a public document stripped of private context instead. Switch to Stop Mode when protected content is unexpectedly tracked, staged, or present in outgoing commits.
+
 Invoke other available skills when applicable:
 
 - Verified features, commands, configuration, limitations, versions, or structure changed: use `$write-project-readme`.

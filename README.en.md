@@ -57,9 +57,9 @@ Use `manage-project-docs` and `manage-project-git` independently when documentat
 
 Creates a minimal, technology-agnostic project scaffold in an empty directory:
 
-- Creates Chinese and English README files, `TODO.md`, `docs/PRD.md`, `docs/.gitkeep`, and `src/`.
-- Creates a generic `.gitignore` that excludes potentially private `TODO.md` and `docs/PRD.md` planning files by default; the PRD is tracked only when explicitly requested.
-- Explicitly reports the Git tracking status of TODO and PRD after initialization to prevent accidental disclosure of private product information.
+- Creates Chinese and English README files, `TODO.md`, `docs/PRD.md`, `docs/.gitkeep`, the local private directory `docs/private/`, and `src/`.
+- Creates a generic `.gitignore` that excludes potentially private `TODO.md`, `docs/PRD.md`, and `docs/private/` content by default; the PRD is tracked only when explicitly requested.
+- Explicitly reports the Git tracking state of TODO, PRD, and the private directory after initialization. `docs/private/` has no `.gitkeep`, so consuming skills may need to recreate it compatibly after a clone.
 - Validates the directory first to avoid overwriting existing content.
 - Does not choose a language, framework, license, or package manager, and does not initialize Git.
 
@@ -71,6 +71,7 @@ Creates or updates `docs/PRD.md` from user requirements, existing documents, and
 - Uses stable `FR-XXX` IDs and verifiable acceptance criteria.
 - Separates confirmed, planned, and open information.
 - Preserves valid requirements through incremental updates without breaking down implementation tasks or writing code.
+- Keeps the PRD local, private, and Git-ignored by default; it adds a missing rule incrementally and stops on unconfirmed existing tracking.
 
 ### `write-project-todo`
 
@@ -81,6 +82,7 @@ Converts the PRD and current project state into a local `TODO.md`:
 - Marks tasks complete only with credible evidence.
 - Completing a TASK does not mean its FR has passed acceptance.
 - Does not modify the PRD or execute tasks automatically.
+- Keeps TODO local, private, and Git-ignored by default; it reviews internal tracking and sensitive content before any explicit publication.
 
 ### `write-project-readme`
 
@@ -90,6 +92,7 @@ Creates or synchronizes `README.md` and `README.en.md` from actual repository co
 - Keeps the Traditional Chinese and English versions semantically equivalent.
 - Distinguishes implemented, planned, and unconfirmed content.
 - Preserves accurate human-written content through incremental updates without inventing features, versions, links, or test results.
+- Treats TODO, PRD, and `docs/private/` as private inputs and creates only a minimal public projection independently supported by public evidence.
 
 ### `manage-project-docs`
 
@@ -99,7 +102,8 @@ Uses a two-phase workflow to organize development records and maintained documen
 - A document qualifies as organized public only when it is independently understandable without private TODOs or PRDs, serves a defined audience, contains verified content, and has a public navigation entry.
 - Deletes obsolete files, merges fragments, moves documents, or updates links only after the user approves the exact plan.
 - Follows existing documentation conventions first; it may use Diátaxis and project needs to choose directories, but never creates empty categories or content-free documents.
-- Places approved private documents under `docs/private/` and adds an ignore rule while disclosing that tracked files and Git history remain unaffected.
+- Reuses the `docs/private/` directory and ignore rule created during initialization. It repairs them compatibly only when an approved plan needs them, while disclosing that tracked files and Git history remain unaffected.
+- Treats `docs/private/HANDOFF.md` as the reserved private snapshot for the handoff skill; it is not published, moved, merged, or deleted unless explicitly included in scope.
 - Treats `docs/private/` as no substitute for secret storage; real credentials stop the workflow and require revocation or rotation guidance.
 
 ### `manage-project-handoff`
@@ -109,7 +113,7 @@ Creates or reads `docs/private/HANDOFF.md` to safely transfer immediate context 
 - Routes durable rules, product requirements, implementation progress, and public behavior to `AGENTS.md`, PRD, TODO, or README instead of replacing official sources with the handoff.
 - Records each user instruction's intent, scope, status, source, lifetime, and conflicts without promoting it to a permanent rule without confirmation.
 - Preserves the current objective, Git state, verification results, decision rationale, blockers, risks, and one to three next actions.
-- Maintains one current snapshot instead of an append-only session log and excludes it from Git through the `docs/private/` ignore rule by default.
+- Maintains one current snapshot instead of an append-only session log. It reuses the initialized privacy boundary first and repairs it in Prepare Mode only when absent from a legacy project or clone.
 - Revalidates the snapshot against current instructions, files, and Git state in a new session; does not execute TODO items or edit code unless asked to continue.
 - Treats `docs/private/` as no substitute for secret storage and never records credentials or complete sensitive values.
 
@@ -121,6 +125,7 @@ Uses risk-based depth for first-time Git initialization and commit-and-upload wo
 - First initialization, unfamiliar files, binary or large artifacts, private documentation, and high-risk code use Enhanced Mode.
 - Scans, verification, fetches, and routine file-size reports are not repeated while files, index, HEAD, and remote remain unchanged.
 - May invoke README, TODO, PRD, documentation-management, or code-review skills, then reruns only affected checks.
+- Treats TODO, PRD, and `docs/private/` as protected paths. A generic “upload everything” request does not publish them; unexpected tracked, staged, or outgoing content causes a stop.
 - Stops on secrets, mixed pre-existing staged content, version divergence, conflicts, or failed verification and lets the user choose; never rewrites history or force-pushes automatically.
 - Complete procedures for the three modes live under `references/`; the main skill handles only risk selection, shared baselines, and loading routes.
 
@@ -128,9 +133,9 @@ Uses risk-based depth for first-time Git initialization and commit-and-upload wo
 
 Reviews code for correctness, security, performance, architecture, and maintainability:
 
-- Reports findings by severity with locations, rationale, and remediation guidance.
-- Provides suggestions or diff examples without modifying source code.
-- Includes additional review guidance for Dart and Flutter.
+- Reports evidence-backed findings by severity with trigger conditions, locations, impact, and remediation guidance.
+- Provides suggestions or diff examples without changing files or Git state, and never starts refactoring automatically.
+- Applies Dart and Flutter guidance conditionally from project configuration instead of forcing architecture, lint packages, or dependency upgrades.
 
 This skill was adapted from an external version and personally modified; its original source is currently unconfirmed.
 
@@ -138,9 +143,10 @@ This skill was adapted from an external version and personally modified; its ori
 
 Turns code-review findings into small, verifiable refactoring steps:
 
-- Prioritizes high-severity logic and security issues.
-- Applies atomic changes while preserving external behavior.
-- Reports the review findings addressed, verification performed, and remaining questions.
+- Revalidates findings against current code and preserves existing or unrelated worktree changes.
+- Keeps external behavior stable for pure refactoring; behavior-changing defect or security fixes require explicit authorization.
+- Prioritizes relevant automated tests, lint, type checks, and builds, using manual checks only for hard-to-automate behavior.
+- Synchronizes TODO and README when progress or public behavior changes, but never creates a handoff, commit, or push automatically.
 
 This skill was adapted from an external version and personally modified; its original source is currently unconfirmed.
 
@@ -165,7 +171,7 @@ A UI/UX design assistance skill from [nextlevelbuilder/ui-ux-pro-max-skill](http
 └── README.en.md
 ```
 
-Each self-authored bilingual skill directory contains a Chinese `SKILL.md`, an English `SKILL_en.md`, and `agents/openai.yaml` for the Codex interface. Skills that use progressive disclosure also keep bilingual, on-demand rules under `references/`.
+Each self-authored bilingual skill directory contains a Chinese `SKILL.md`, an English `SKILL_en.md`, and `agents/openai.yaml`; both externally adapted skills also provide interface metadata. Skills that use progressive disclosure keep on-demand rules under `references/`.
 
 ## Shared Design Principles
 

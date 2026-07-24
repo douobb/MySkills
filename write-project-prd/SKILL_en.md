@@ -1,6 +1,6 @@
 ---
 name: write-project-prd
-description: Create, organize, review, or incrementally update docs/PRD.md from user requirements, existing documentation, and the current repository. Define only the product problem, goals, scope, requirements, constraints, and acceptance criteria; do not break work into TODO tasks, write code, or replace detailed technical design with a PRD.
+description: Create, organize, review, or incrementally update the private-by-default docs/PRD.md from user requirements, existing documentation, and the current repository. Define only the product problem, goals, scope, requirements, constraints, and acceptance criteria while maintaining its Git privacy boundary; do not break work into TODO tasks, write code, or replace detailed technical design with a PRD.
 ---
 
 # Write Project PRD
@@ -26,6 +26,7 @@ Ask only when missing information materially affects the PRD. Prioritize the pro
 
 ## Content Principles
 
+- Treat `docs/PRD.md` as local, non-public product planning by default. It may contain necessary internal product context, but never credentials, complete sensitive values, or unnecessary personal data.
 - Describe the target product and observable outcomes, not code or implementation details.
 - Make requirements specific, understandable, and verifiable; separate confirmed requirements, planned direction, and open questions.
 - Do not present suggestions, assumptions, or technical preferences as confirmed product requirements.
@@ -33,7 +34,14 @@ Ask only when missing information materially affects the PRD. Prioritize the pro
 - Do not include estimates, checkbox tasks, development phases, or file-by-file implementation steps.
 - Do not remove a valid requirement merely because it is not implemented. Claim implementation only when evidence exists and the document explicitly tracks status.
 - Select content according to project scale. Do not force business KPIs, complete personas, or irrelevant sections onto small projects.
-- Leave no TODO, TBD, template text, empty sections, unsupported numbers, or sensitive information.
+- Leave no TODO, TBD, template text, empty sections, unsupported numbers, or secrets such as credentials.
+
+## Privacy and Git Boundary
+
+- Before writing, inspect the root `.gitignore`, PRD tracking and staging state, and `git check-ignore` when available.
+- Unless the user explicitly requests tracking or uploading this PRD, the root `.gitignore` must contain the exact standalone rule `docs/PRD.md`. Preserve existing content and add only a missing rule without duplication.
+- If the PRD is tracked, staged, or present in outgoing commits without explicit public intent, stop and report before editing. Never untrack it, rewrite history, or create a change likely to be uploaded accidentally.
+- An explicit request to publish a PRD only authorizes evaluating it for tracking; it does not make every detail public-safe. Inspect commercial plans, personal data, security information, and attribution, then let the user choose between the full PRD and a sanitized public projection.
 
 ## Document Structure
 
@@ -115,6 +123,7 @@ Before completion, confirm:
 - No template text, empty sections, implementation tasks, code, or unnecessary technical design remains.
 - Existing PRDs were updated incrementally, and references and required attribution were preserved.
 - No unrelated files were deleted, secrets exposed, or changes staged, committed, or pushed without explicit instruction.
+- The PRD remains ignored, or the user explicitly confirmed public tracking; any `.gitignore` change and existing tracking risk were reported.
 
 The completion report must identify the file created or updated, major requirement changes, whether IDs were preserved, unresolved conflicts or questions, references, and that implementation was not started.
 

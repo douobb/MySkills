@@ -13,6 +13,8 @@
 
 交接不存在時，不要自行建立假快照。改以 PRD、TODO、Git 與儲存庫內容重建可驗證狀態，並說明缺少前一個 session 的臨時脈絡。
 
+恢復模式不得只因 `docs/private/` 或忽略規則缺失就建立資料夾或修改 `.gitignore`；只有使用者要求建立新交接時，才切換至建立流程補建。
+
 ## 2. 驗證新鮮度
 
 檢查目前 Git root、branch、HEAD、staged／unstaged／untracked、進行中的 Git 操作及交接引用路徑，並比較快照：

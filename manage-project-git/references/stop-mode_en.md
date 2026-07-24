@@ -5,6 +5,7 @@ Use this mode for secrets, version differences, conflicts, failures, or any cond
 ## Triggers
 
 - Possible credentials, tokens, private keys, personal data, internal endpoints, commercial plans, or other non-public content.
+- `TODO.md`, `docs/PRD.md`, or `docs/private/` is tracked, staged, or present in an outgoing commit without exact publication authorization.
 - Pre-existing staged content includes files outside this task.
 - Detached HEAD, an active merge/rebase/cherry-pick/revert/bisect, unresolved conflicts, or an uncertain target branch.
 - Material test, lint, build, hook, or skill-validation failure.

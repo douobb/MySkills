@@ -5,6 +5,7 @@
 ## 觸發條件
 
 - 疑似憑證、token、私鑰、個資、內部端點、商業規劃或其他不公開內容。
+- `TODO.md`、`docs/PRD.md` 或 `docs/private/` 在沒有精確公開授權時已 tracked、staged 或存在於 outgoing commit。
 - 既有 staged 內容混有本次範圍外檔案。
 - detached HEAD、進行中的 merge／rebase／cherry-pick／revert／bisect、未解衝突或目標分支不明。
 - 重要測試、lint、build、hook 或 Skill 驗證失敗。

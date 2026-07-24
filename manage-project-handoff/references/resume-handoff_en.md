@@ -13,6 +13,8 @@ Read current system, user, and project instructions first, then:
 
 If no handoff exists, do not invent one. Reconstruct only verifiable state from PRD, TODO, Git, and repository content, and disclose that temporary context from the prior session is missing.
 
+Resume Mode must not create a directory or edit `.gitignore` merely because `docs/private/` or its ignore rule is missing. Switch to Prepare Handoff and repair the boundary only when the user asks to create a new handoff.
+
 ## 2. Verify Freshness
 
 Inspect the current Git root, branch, HEAD, staged/unstaged/untracked files, active Git operations, and referenced paths, then compare the snapshot:

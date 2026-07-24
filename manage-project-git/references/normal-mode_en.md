@@ -6,7 +6,7 @@ Use this mode for a small, single-purpose change in an existing repository with 
 
 1. Once, inspect the Git root, branch, HEAD, worktree, staged/unstaged/untracked files, remote/upstream, active Git operations, and task scope.
 2. Inspect pre-existing staged content. If it contains out-of-scope files, switch to Stop Mode; never unstage or include them autonomously.
-3. Scan only changes and files intended for the commit. For a push-only request, also inspect outgoing commits absent from the target remote.
+3. Scan only changes and files intended for the commit. For a push-only request, also inspect outgoing commits absent from the target remote, and confirm that `TODO.md`, `docs/PRD.md`, and `docs/private/` are not included unexpectedly.
 4. Apply the sensitive-information and documentation baseline, then run only relevant tests, lint, build, or skill validation. Do not create an empty commit unless explicitly requested for an understood purpose.
 5. Verify effective `user.name`, `user.email`, and signing policy without silently changing global configuration.
 6. Stage exact paths and inspect staged files, the complete staged diff, and `git diff --cached --check`.

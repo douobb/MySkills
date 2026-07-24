@@ -16,7 +16,7 @@ Never delete extraneous files automatically. List exact paths, rationale, and op
 ## Workflow A: First-Time Initialization
 
 1. Inspect every regular and hidden entry. If Git exists, use Workflow B.
-2. Inspect sensitive information, extraneous files, and `.gitignore`. Exclude `TODO.md`, `docs/PRD.md`, `docs/private/`, real `.env`, and confirmed generated material by default. Reconfirm suitability before publishing a PRD.
+2. Inspect sensitive information, extraneous files, and `.gitignore`. By default, exclude `TODO.md`, `docs/PRD.md`, `docs/private/`, real `.env`, and confirmed generated material with exact standalone rules while preserving existing content and avoiding duplicates. A PRD or TODO may be an exception only when the user names its exact path and it passes publication review; never upload `docs/private/` directly.
 3. Default to `main` when unspecified and report the choice. Use `git init -b <branch>` or an equivalent non-destructive fallback for older Git.
 4. Add a remote only after the user supplies or confirms its URL. Before creating a hosted repository, confirm platform, name, owner, and public/private visibility; never infer visibility.
 5. For initialization only, stop without committing or pushing.
@@ -29,7 +29,7 @@ Initialization does not imply scaffolding, license selection, remote creation, c
 
 1. Build the exact file list. Propose atomic commits for unrelated purposes and let the user decide whether to split them.
 2. Inspect pre-existing staged content. If it includes out-of-scope files, switch to Stop Mode; never unstage or include them autonomously.
-3. Complete the expanded inventory, sensitive-information and documentation synchronization, and existing verification for every affected area.
+3. Complete the expanded inventory, sensitive-information and documentation synchronization, and existing verification for every affected area. Confirm separately that no protected path appears unexpectedly in tracked, staged, or outgoing sets.
 4. Do not create an empty commit. Stage exact paths, inspect the complete staged diff and `git diff --cached --check`, then create a single-purpose commit.
 5. When push is required, fetch once after content stabilizes: push normally when only ahead; set missing upstream only for an explicit upload when no same-name remote branch exists; switch to Stop Mode when behind, diverged, mismatched, or fetch fails.
 6. After push, compare local HEAD with the remote-tracking branch and inspect the remaining worktree.

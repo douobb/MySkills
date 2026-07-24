@@ -33,7 +33,14 @@ Read both existing README files fully, then inspect as applicable:
 
 After detecting the technology stack, inspect its equivalent conventional files. Do not access private remote resources without permission.
 
-Build an internal fact inventory that separates verified facts, implemented and planned features, uncertain or stale content, sensitive information, technology versions, release status, licenses, and upstream relationships.
+Build an internal fact inventory that separates verified facts, implemented and planned features, uncertain or stale content, sensitive information, source visibility, technology versions, release status, licenses, and upstream relationships.
+
+### Private Source Boundary
+
+- Treat `TODO.md`, `docs/PRD.md`, `docs/private/`, and other ignored or unpublished documents as private inputs. Readability does not imply permission to publish.
+- Private inputs may explain plans and background, but never link them directly or copy internal TASK, FR, Phase, acceptance-matrix, schedule, commercial, or handoff context into a README.
+- Create only a minimal public projection when code, tests, configuration, formal release data, or another public source independently verifies the content and it remains valuable without private context.
+- When the user explicitly requests publishing a PRD, TODO, or private document, inspect Git tracking and sensitivity first. Use `$manage-project-docs` when organization is needed; never use a README to bypass its publication gate.
 
 ### Conflict Priority
 
@@ -88,7 +95,7 @@ Include only sections supported by evidence and useful to readers:
 | Development | 開發 | Include verified development, build, lint, formatting, debugging, or local-service workflows that differ from ordinary usage |
 | Project Structure | 專案結構 | Add only when helpful; show important paths, not dependencies, outputs, caches, or every minor file |
 | Testing | 測試 | Include only when tests or test commands exist; never infer coverage or completeness |
-| Documentation | 文件 | Link only existing public documents; do not expose private planning or link the Git-ignored TODO.md |
+| Documentation | 文件 | Link only existing public documents; never link `TODO.md`, the private-by-default `docs/PRD.md`, `docs/private/`, or other ignored or unpublished planning |
 | Release | 發布版本 | Include only with formal evidence such as tags, releases, changelogs, publishing configuration, artifacts, or workflows |
 | Roadmap | 開發藍圖 | Add when requested or supported by public high-level plans; never copy the full TODO.md or private tracking data |
 | References | 參考與致謝 | Required for verified adaptation, port, fork, article, asset, model, dataset, paper, or other source relationships |
@@ -131,7 +138,7 @@ Release content must come from verified versions, dates, links, artifacts, and s
 ## Workflow
 
 1. **Inspect the repository**: Read relevant code, configuration, tests, documentation, attribution, release data, and both README files.
-2. **Build a fact inventory**: Separate verified, planned, uncertain, stale, and sensitive information.
+2. **Build a fact inventory**: Separate verified, planned, uncertain, stale, sensitive, and private-source information.
 3. **Select sections**: Keep only evidence-backed content that helps readers.
 4. **Draft the Chinese version**: Establish the shared meaning in README.md.
 5. **Synchronize English**: Update README.en.md from the Chinese content and the same facts; add no English-only information.
@@ -150,6 +157,7 @@ Before completion, confirm:
 - Every concrete claim has evidence, and planned work is not presented as complete.
 - Commands, paths, filenames, relative links, configuration, and versions are correct and consistent.
 - No secrets, empty sections, placeholders, broken links, or unsupported feature, compatibility, license, or release claims remain.
+- No private-by-default TODO, PRD, `docs/private/`, or internal tracking context is linked or leaked; every public projection is independently understandable from public evidence.
 - Valid human content, attribution, license notices, and important upstream relationships are preserved.
 - Material upstream relationships are disclosed early in Overview and detailed in References.
 - Optional Release, License, Contributing, Testing, Demo, and badge content has evidence.

@@ -1,6 +1,6 @@
 ---
 name: write-project-todo
-description: Create, organize, review, or incrementally update a local project implementation plan from docs/PRD.md, the current repository, and an existing TODO.md. Use to break down requirements, order phases and dependencies, and track next steps, blockers, and progress; do not change product requirements, implement features, or execute TODO tasks automatically.
+description: Create, organize, review, or incrementally update a private-by-default local implementation plan from docs/PRD.md, the current repository, and an existing TODO.md while maintaining its Git privacy boundary. Use to break down requirements, order phases and dependencies, and track next steps, blockers, and progress; do not change product requirements, implement features, or execute TODO tasks automatically.
 ---
 
 # Write Project TODO
@@ -29,6 +29,7 @@ Do not resolve uncertain conflicts by assumption. Put them in Open Questions and
 
 ## Planning Principles
 
+- Treat `TODO.md` as a local, non-public execution plan by default. Preserve necessary task context, but never credentials, complete sensitive values, or unnecessary personal data.
 - Convert PRD requirements into implementation work rather than copying PRD headings into checkboxes.
 - Give every task a clear outcome and an observable or executable completion method.
 - Order work by real dependencies and prioritize foundational tasks that remove blockers.
@@ -36,6 +37,13 @@ Do not resolve uncertain conflicts by assumption. Put them in Open Questions and
 - Include testing, documentation, security, integration, and release preparation when appropriate.
 - Do not write code, modify docs/PRD.md, create detailed architecture, API, or database designs, or execute tasks automatically.
 - Do not add guessed estimates, invented progress or test results, secrets, template text, empty phases, or meaningless tasks.
+
+## Privacy and Git Boundary
+
+- Before writing, inspect the root `.gitignore`, TODO tracking and staging state, and `git check-ignore` when available.
+- Unless the user explicitly requests tracking or uploading this TODO, the root `.gitignore` must contain the exact standalone rule `TODO.md`. Preserve existing content and add only a missing rule without duplication.
+- If the TODO is tracked, staged, or present in outgoing commits without explicit public intent, stop and report before editing. Never untrack it, rewrite history, or create a change likely to be uploaded accidentally.
+- Even when the user explicitly requests a public TODO, inspect internal task or phase markers, commercial plans, personal data, and security information first. Recommend a public roadmap without internal tracking details when appropriate.
 
 ## Tasks and Phases
 
@@ -142,6 +150,7 @@ Before completion, confirm:
 - Next steps, blockers, cancellations, and deferrals match current state.
 - Existing TODO content was updated incrementally and contains no code, unsupported facts, secrets, template text, or empty sections.
 - No unrelated file was deleted and no changes were staged, committed, or pushed without explicit instruction.
+- The TODO remains ignored, or the user explicitly confirmed public tracking; any `.gitignore` change and existing tracking risk were reported.
 
 The completion report must summarize major tasks added, changed, completed, cancelled, or deferred; whether IDs were preserved; the current phase, next step, blockers, and open questions; and that implementation was not started.
 

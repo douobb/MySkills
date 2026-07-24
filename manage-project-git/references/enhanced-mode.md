@@ -16,7 +16,7 @@
 ## 流程 A：第一次初始化
 
 1. 檢查所有一般與隱藏項目；已有 Git 儲存庫時改走流程 B。
-2. 檢查敏感資訊、多餘檔案與 `.gitignore`。預設排除 `TODO.md`、`docs/PRD.md`、`docs/private/`、真實 `.env` 與確認的產生物；公開 PRD 前重新確認適合公開。
+2. 檢查敏感資訊、多餘檔案與 `.gitignore`。預設以完全相符的獨立規則排除 `TODO.md`、`docs/PRD.md`、`docs/private/`、真實 `.env` 與確認的產生物；保留既有規則且不重複。PRD／TODO 只有在使用者指定精確路徑並通過公開檢查後才可例外，`docs/private/` 不得例外直接上傳。
 3. 未指定分支時使用 `main` 並說明；以 `git init -b <branch>` 初始化，舊版 Git 使用等價且非破壞性方式。
 4. 只有使用者提供或確認 URL 時才新增 remote。建立託管儲存庫前確認平台、名稱、擁有者與 public／private，不推定公開性。
 5. 只要求初始化時到此停止，不建立 commit 或 push。
@@ -29,7 +29,7 @@
 
 1. 建立精確檔案清單；多個無關目的提出原子提交方案，由使用者決定是否拆分。
 2. 檢查既有 staged 內容；混有範圍外檔案時切換停止模式，不擅自 unstage 或一併提交。
-3. 完成擴大盤點、敏感資訊與文件同步，以及所有受影響領域的既有驗證。
+3. 完成擴大盤點、敏感資訊與文件同步，以及所有受影響領域的既有驗證；另確認受保護路徑沒有意外出現在 tracked、staged 或 outgoing 集合。
 4. 不建立空 commit。精確暫存，審查完整 staged diff 與 `git diff --cached --check`，再建立單一目的 commit。
 5. 需要 push 時，在內容穩定後 fetch 一次：本機僅領先則一般 push；缺 upstream 且遠端無同名分支時可依明確上傳要求設定；落後、分歧、remote 不符或 fetch 失敗則切換停止模式。
 6. push 後比較本機 HEAD 與遠端追蹤分支，並檢查剩餘工作樹。

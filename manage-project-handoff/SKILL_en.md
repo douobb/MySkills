@@ -12,7 +12,8 @@ Use one private snapshot to preserve immediate context that PRD and TODO do not 
 - Read currently active instructions and repository facts first. A handoff never overrides current user direction or project rules.
 - Record only verified, still-relevant information required by the next session. Do not copy complete PRDs, TODOs, READMEs, diffs, or conversations.
 - Preserve the intent, scope, status, and lifetime of user instructions. Never infer that an instruction is permanent.
-- Store the snapshot at `docs/private/HANDOFF.md` by default and exclude `docs/private/` from Git.
+- Store the snapshot at `docs/private/HANDOFF.md` by default and exclude `docs/private/` from Git. Prefer the privacy boundary pre-created by `$initialize-project-structure`.
+- If the privacy boundary is absent after a clone, in a legacy project, or under an existing structure, only Prepare Mode may repair it compatibly. Resume Mode reports the gap without changing structure.
 - Treat `docs/private/` as accidental-commit protection, not secret storage. Never record tokens, passwords, private keys, or complete sensitive values.
 - An ignored local snapshot remains in the current workspace only. For another machine or developer, require a user-selected secure transfer method instead of uploading it to public Git.
 - Creating a handoff does not authorize executing next steps, changing official rules, committing, pushing, deleting, or cleaning the worktree.
@@ -71,13 +72,14 @@ Never fill gaps with unsupported statements such as “everything complete” or
 
 ## Privacy and Git Boundary
 
-- When preparing a handoff, incrementally ensure `.gitignore` contains a standalone `docs/private/` rule. Never overwrite existing rules or create `docs/private/.gitkeep`.
+- Before preparing a handoff, inspect `docs/private/` and the standalone `.gitignore` rule `docs/private/`. Reuse both without producing a meaningless change when they are already correct.
+- If the rule exists but the directory is absent, Prepare Mode may create the directory before writing the snapshot. If the rule is missing, preserve existing content and add it incrementally first. Never duplicate the rule or create `docs/private/.gitkeep`.
 - Use `git check-ignore` to verify the snapshot is ignored. If it is tracked, stop and report; `.gitignore` does not untrack files or erase history.
 - Only when the user explicitly requests public handoff content should you evaluate creating a public document stripped of internal context. Never track `HANDOFF.md` directly.
 - Obtain confirmation before deleting or clearing an untracked handoff snapshot because Git usually cannot restore it.
 
 ## Completion Report
 
-Prepare Mode reports the snapshot path, sources, synchronized official documents, Git-ignore state, preserved user instructions, open questions, and unverified items. Resume Mode reports the restored objective, active constraints, deviations from current state, trustworthy next steps, and blockers.
+Prepare Mode reports the snapshot path, sources, synchronized official documents, whether the privacy boundary was reused or repaired, Git-ignore state, preserved user instructions, open questions, and unverified items. Resume Mode reports the restored objective, active constraints, deviations from current state, trustworthy next steps, and blockers.
 
 Unless the user also asks to continue implementation, Resume Mode only reports state. It does not execute TODO items, edit code, commit, or push automatically.
