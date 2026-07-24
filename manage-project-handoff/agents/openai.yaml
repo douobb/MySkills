@@ -1,0 +1,4 @@
+interface:
+  display_name: "管理專案交接"
+  short_description: "建立私有交接快照並安全恢復跨 session 專案脈絡"
+  default_prompt: "使用 $manage-project-handoff 整理目前專案狀態、使用者要求與下一步，建立或讀取私有 session 交接快照。"

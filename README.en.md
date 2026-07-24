@@ -2,7 +2,7 @@
 
 [繁體中文](README.md)
 
-This repository collects personal Codex Skills for project and Git initialization, requirements, implementation planning, README and project-document maintenance, commits and uploads, code review, refactoring, and a separately installed UI/UX design skill.
+This repository collects personal Codex Skills for project and Git initialization, requirements, implementation planning, README and project-document maintenance, cross-session handoffs, commits and uploads, code review, refactoring, and a separately installed UI/UX design skill.
 
 ## Skill Sources
 
@@ -13,6 +13,7 @@ This repository collects personal Codex Skills for project and Git initializatio
 | `write-project-todo` | Authored for this repository | Converts requirements into an actionable, verifiable local implementation plan |
 | `write-project-readme` | Authored for this repository | Maintains synchronized Chinese and English README files from repository facts |
 | `manage-project-docs` | Authored for this repository | Classifies, consolidates, and checks independent publication value for docs |
+| `manage-project-handoff` | Authored for this repository | Creates private handoff snapshots and safely restores cross-session project context |
 | `manage-project-git` | Authored for this repository | Uses risk-based depth to safely initialize Git and streamline commit-and-push work |
 | `code-review` | External skill with personal modifications | The original source is currently unconfirmed; reviews code without editing it |
 | `start-refactor` | External skill with personal modifications | The original source is currently unconfirmed; turns review findings into incremental refactoring |
@@ -44,7 +45,11 @@ flowchart TD
     NEXT -->|"Requirements need revision"| PRD
 ```
 
-After each implementation cycle, first use `write-project-todo` to update completion status, next steps, and blockers, then use `write-project-readme` to synchronize verified behavior into both README files. When development-generated documents need cleanup, use `manage-project-docs` separately to audit `docs/` and organize it after user approval. At delivery time, `manage-project-git` can inspect secrets, extraneous files, documentation synchronization, and remote versions before committing and pushing. The next iteration can return directly to TODO planning; when product requirements need revision, return to the PRD first and then replan the TODO.
+After implementation, synchronize the TODO and then update the README with verified behavior. Return to the PRD when requirements change.
+
+Use `manage-project-docs` and `manage-project-git` independently when documentation cleanup or Git delivery is needed.
+
+`manage-project-handoff` is not part of the fixed cycle above. Use it independently whenever a session switch is needed to preserve user constraints, Git state, verification, decisions, and next steps in a private snapshot. The new session must still revalidate that snapshot against the current repository.
 
 ## Skills
 
@@ -97,6 +102,17 @@ Uses a two-phase workflow to organize development records and maintained documen
 - Places approved private documents under `docs/private/` and adds an ignore rule while disclosing that tracked files and Git history remain unaffected.
 - Treats `docs/private/` as no substitute for secret storage; real credentials stop the workflow and require revocation or rotation guidance.
 
+### `manage-project-handoff`
+
+Creates or reads `docs/private/HANDOFF.md` to safely transfer immediate context that could be lost between sessions:
+
+- Routes durable rules, product requirements, implementation progress, and public behavior to `AGENTS.md`, PRD, TODO, or README instead of replacing official sources with the handoff.
+- Records each user instruction's intent, scope, status, source, lifetime, and conflicts without promoting it to a permanent rule without confirmation.
+- Preserves the current objective, Git state, verification results, decision rationale, blockers, risks, and one to three next actions.
+- Maintains one current snapshot instead of an append-only session log and excludes it from Git through the `docs/private/` ignore rule by default.
+- Revalidates the snapshot against current instructions, files, and Git state in a new session; does not execute TODO items or edit code unless asked to continue.
+- Treats `docs/private/` as no substitute for secret storage and never records credentials or complete sensitive values.
+
 ### `manage-project-git`
 
 Uses risk-based depth for first-time Git initialization and commit-and-upload work in an existing repository:
@@ -141,6 +157,7 @@ A UI/UX design assistance skill from [nextlevelbuilder/ui-ux-pro-max-skill](http
 ├── write-project-todo/
 ├── write-project-readme/
 ├── manage-project-docs/
+├── manage-project-handoff/
 ├── manage-project-git/
 ├── code-review/
 ├── start-refactor/
@@ -155,5 +172,5 @@ Each self-authored bilingual skill directory contains a Chinese `SKILL.md`, an E
 - Chinese `SKILL.md` is the primary version, with an English version kept semantically synchronized.
 - YAML `name` values use English kebab-case; commands, paths, and identifiers remain unchanged.
 - Use existing context and repository facts first; never invent requirements, implementation, versions, progress, or verification results.
-- Keep product requirements, implementation planning, code changes, and public documentation responsibilities separate.
+- Keep durable rules, product requirements, implementation planning, session handoff, code changes, and public documentation responsibilities separate.
 - Prefer incremental updates that preserve accurate and useful human-written content.

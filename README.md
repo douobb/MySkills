@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-本儲存庫整理個人使用的 Codex Skills，涵蓋專案與 Git 初始化、需求文件、實作規劃、README 與專案文件維護、提交上傳、程式碼審查、重構，以及需另外安裝的 UI/UX 設計 Skill。
+本儲存庫整理個人使用的 Codex Skills，涵蓋專案與 Git 初始化、需求文件、實作規劃、README 與專案文件維護、跨 session 交接、提交上傳、程式碼審查、重構，以及需另外安裝的 UI/UX 設計 Skill。
 
 ## Skill 來源
 
@@ -13,6 +13,7 @@
 | `write-project-todo` | 自行撰寫 | 將需求轉換成可執行、可驗證的本機實作規劃 |
 | `write-project-readme` | 自行撰寫 | 根據儲存庫事實同步維護中英文 README |
 | `manage-project-docs` | 自行撰寫 | 分類、整合並檢查 docs 的獨立公開價值 |
+| `manage-project-handoff` | 自行撰寫 | 建立私有交接快照並安全恢復跨 session 專案脈絡 |
 | `manage-project-git` | 自行撰寫 | 依風險分級安全初始化 Git，統一精簡提交與推送流程 |
 | `code-review` | 外部 Skill 經個人微調 | 原始來源目前未確認；僅進行審查，不直接修改程式碼 |
 | `start-refactor` | 外部 Skill 經個人微調 | 原始來源目前未確認；將審查建議轉換成漸進式重構 |
@@ -44,7 +45,11 @@ flowchart TD
     NEXT -->|"需求需要調整"| PRD
 ```
 
-每輪實作後，先使用 `write-project-todo` 更新完成狀態、下一步與阻塞事項，再使用 `write-project-readme` 將已驗證的實作同步到中英文 README。需要清理開發過程產生的文件時，可另外使用 `manage-project-docs` 盤點 `docs/`，並在使用者確認後整理。準備交付時可使用 `manage-project-git` 檢查敏感資訊、多餘檔案、文件同步與遠端版本，再提交及推送。下一輪可直接回到 TODO 安排工作；若產品需求需要調整，則先回到 PRD，再重新規劃 TODO。
+實作後先同步 TODO，再將已驗證內容更新到 README；需求改變時回到 PRD 重新規劃。
+
+文件整理與 Git 交付分別按需使用 `manage-project-docs` 與 `manage-project-git`。
+
+`manage-project-handoff` 不屬於上述固定循環；在任何階段需要切換 session 時獨立使用，將使用者限制、Git 狀態、驗證、決策與下一步整理成私有快照。新 session 讀取後仍須對照目前儲存庫重新驗證。
 
 ## Skills
 
@@ -97,6 +102,17 @@ flowchart TD
 - 將核准的不公開文件放入 `docs/private/` 並加入 `.gitignore`，同時揭露已追蹤檔案與 Git 歷史不受忽略規則保護的風險。
 - `docs/private/` 不是機密保管庫；發現真實憑證時停止處理並建議撤銷或輪替。
 
+### `manage-project-handoff`
+
+建立或讀取 `docs/private/HANDOFF.md`，安全傳遞不同 session 間容易遺失的即時脈絡：
+
+- 將長期規範、產品需求、實作進度與公開行為分流至 `AGENTS.md`、PRD、TODO 或 README，不以交接文件取代正式來源。
+- 記錄使用者要求的原意、範圍、狀態、來源、期限與衝突，未經確認不升級為永久規範。
+- 保存目前目標、Git 狀態、驗證結果、決策理由、阻塞、風險及一至三個下一步。
+- 交接快照維持單一最新狀態，不累積成 session log，預設由 `docs/private/` 忽略規則排除 Git。
+- 新 session 讀取後先與目前指示、檔案及 Git 狀態比對；除非使用者要求繼續，不自動執行 TODO 或修改程式碼。
+- `docs/private/` 不是機密保管庫，交接文件不得保存憑證或完整敏感值。
+
 ### `manage-project-git`
 
 依風險分級統一首次 Git 初始化與既有儲存庫的提交上傳流程：
@@ -141,6 +157,7 @@ UI/UX 設計輔助 Skill，來源為 [nextlevelbuilder/ui-ux-pro-max-skill](http
 ├── write-project-todo/
 ├── write-project-readme/
 ├── manage-project-docs/
+├── manage-project-handoff/
 ├── manage-project-git/
 ├── code-review/
 ├── start-refactor/
@@ -155,5 +172,5 @@ UI/UX 設計輔助 Skill，來源為 [nextlevelbuilder/ui-ux-pro-max-skill](http
 - 中文 `SKILL.md` 為主要版本，英文版本保持語意同步。
 - YAML `name` 使用英文 kebab-case；指令、路徑與識別字保留原文。
 - 先使用既有上下文與儲存庫事實，不虛構需求、實作、版本、進度或驗證結果。
-- 明確分離產品需求、實作規劃、程式碼修改與公開文件的責任。
+- 明確分離長期規範、產品需求、實作規劃、session 交接、程式碼修改與公開文件的責任。
 - 優先採增量更新，保留仍正確且有用的人工內容。
