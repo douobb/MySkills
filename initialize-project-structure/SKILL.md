@@ -1,15 +1,13 @@
 ---
 name: initialize-project-structure
-description: 在空白目錄中建立最小化、與技術無關的專案初始架構，包含空白的中英文 README、PRD、TODO、文件與原始碼目錄、私有文件目錄、Git 目錄保留檔，以及預設排除 TODO.md、docs/PRD.md 與 docs/private/ 的通用 .gitignore。僅用於初始化空白目錄；不得修改既有專案、產生程式碼、安裝套件或初始化 Git。
+description: 僅在空白目錄建立固定、技術無關的專案骨架與私有文件忽略規則；不撰寫文件內容、不產生程式碼或初始化 Git。
 ---
 
 # 初始化專案架構
 
-只建立檔案與目錄；不得撰寫 README、PRD、TODO、原始碼或特定技術設定。
+以目前工作目錄為根目錄，除非使用者指定其他位置。先檢查含隱藏項目的全部內容；僅允許既有 `.git/`、`.DS_Store`、`Thumbs.db`、`desktop.ini`。存在其他內容就停止，列出阻擋項目並說明「未修改」。重複執行同樣適用，不用刪除、reset 或 clean 清空目錄。
 
-## 必要架構
-
-在目前工作目錄建立：
+## 固定產物
 
 ```text
 .
@@ -25,51 +23,9 @@ description: 在空白目錄中建立最小化、與技術無關的專案初始�
     └── .gitkeep
 ```
 
-除 `.gitignore` 外，下列檔案必須完全空白，不得加入標題、註解、模板、預留文字或空白字元：
+通過檢查後建立骨架。除 `.gitignore` 外，所有檔案完全空白，不含標題、模板、註解或空白字元。`docs/private/` 保持空白且不放 `.gitkeep`；clone 後可能不存在，寫入私有文件時才補建。
 
-```text
-README.md
-README.en.md
-TODO.md
-docs/PRD.md
-docs/.gitkeep
-src/.gitkeep
-```
-
-`docs/.gitkeep` 用於在 `docs/PRD.md` 被 Git 排除時保留 `docs/` 目錄。
-
-`docs/private/` 是預先建立的本機私有文件邊界，必須保持空白且不得建立 `.gitkeep`；因為它被 Git 排除，不保證在 clone 後仍存在。
-
-## 執行流程
-
-### 1. 驗證目前目錄
-
-將目前工作目錄視為專案根目錄；除非使用者明確要求，不要建立巢狀專案目錄。
-
-建立任何內容前，檢查所有項目，包括隱藏項目。僅允許下列既有中繼資料：
-
-```text
-.git/
-.DS_Store
-Thumbs.db
-desktop.ini
-```
-
-其他項目皆視為有意義的既有內容。若存在任何一項：
-
-1. 立即停止，不建立任何內容。
-2. 不得覆寫、刪除、移動或重新命名既有項目。
-3. 列出阻止初始化的項目並回報目錄不是空白。
-
-重複執行時，已產生的架構同樣算既有內容；不得修改或重設。
-
-### 2. 建立架構
-
-目錄通過驗證後，一次完成：
-
-1. 建立 `docs/`、`docs/private/` 與 `src/`。
-2. 建立所有必要空白檔案。
-3. 預設建立以下 `.gitignore`：
+`.gitignore` 預設內容：
 
 ```gitignore
 # 本機專案規劃與私有文件
@@ -104,42 +60,12 @@ coverage/
 .cache/
 ```
 
-`TODO.md`、`docs/PRD.md` 與 `docs/private/` 必須是獨立且完全相符的忽略規則，以避免內部任務、產品規劃、交接快照或其他私有文件意外進入公開儲存庫。只有使用者在初始化要求中明確表示要將 PRD 納入版本控制或上傳時，才可省略 `docs/PRD.md` 規則；不得自行推定公開意圖。`TODO.md` 與 `docs/private/` 仍須排除。
+三個私有路徑使用獨立規則；只有使用者明確要求公開特定 PRD／TODO 且經敏感內容檢查後，才可調整該規則。`docs/private/` 不直接公開。不得忽略整個 `docs/`、README、`src/` 或公開的 `.gitkeep`。
 
-不得忽略 `README.md`、`README.en.md`、整個 `docs/`、`src/`、`.gitignore` 或 `docs/.gitkeep`，也不得加入語言或框架專用規則。
+不選框架、語言或授權，不建立原始碼、套件設定或 LICENSE，不安裝套件、初始化 Git、暫存、提交或推送。
 
-### 3. 驗證結果
+## 驗證與回報
 
-確認：
+確認固定產物齊全、空白檔案大小為零、私有目錄沒有 `.gitkeep`、忽略規則正確且沒有非預期變更。已有 Git 時可用 `git check-ignore` 核對私有路徑與公開保留檔，不為檢查而初始化 Git。
 
-- 必要目錄與檔案全部存在。
-- `docs/private/` 已建立、保持空白且沒有 `.gitkeep`。
-- 除 `.gitignore` 外，所有必要檔案大小皆為零。
-- `.gitignore` 含獨立的 `TODO.md` 與 `docs/private/` 規則；預設亦含獨立的 `docs/PRD.md` 規則。
-- `docs/.gitkeep` 未被忽略，可在 PRD 被排除時保留 `docs/`。
-- 未建立任何未要求的項目，也未修改既有內容。
-
-若 `.git/` 原本存在且 Git 可用，可選擇執行：
-
-```bash
-git check-ignore TODO.md docs/PRD.md docs/private/
-```
-
-不得只為此檢查初始化 Git。
-
-### 4. 回報
-
-成功時列出必要架構，並明確告知：`TODO.md`、`docs/PRD.md` 與 `docs/private/` 預設被 `.gitignore` 排除，不會隨一般 Git 提交上傳；`docs/.gitkeep` 會保留公開文件目錄，但空的 `docs/private/` 不會由 Git 保存，clone 後可能需要由使用它的 Skill 補建。若使用者已明確要求追蹤 PRD，則改為說明 PRD 未被排除，但 `TODO.md` 與 `docs/private/` 仍只保留在本機。另確認空白檔案及未產生特定技術內容。可建議使用 README、PRD、TODO Skill 補充內容，或在公開散布前選擇授權；不得自動執行這些後續操作。
-
-失敗時列出既有項目，並明確說明為避免混合或覆寫既有專案，本次未修改任何檔案。
-
-## 安全界線
-
-- 不得使用刪除或重設手段清空目錄，例如 `rm`、`Remove-Item`、`git clean` 或 `git reset --hard`。
-- 不得選擇程式語言、框架或授權，也不得建立套件描述檔、技術設定、原始碼或空白 `LICENSE`。
-- 不得安裝相依套件、初始化 Git，或暫存、提交、推送檔案。
-- 只有使用者明確選擇或要求授權條款時，才能建立 `LICENSE`。
-
-## 驗收條件
-
-只有在目錄已先通過驗證、必要架構完全建立、空白檔案與 `.gitignore` 皆符合規格、`docs/private/` 已建立且保持空白、未修改既有內容，且已明確回報 TODO、PRD 與私有文件目錄的 Git 追蹤狀態時，才算完成。
+成功時簡短列出骨架，明確告知 TODO、PRD 與私有目錄預設被排除、不隨一般提交上傳，並說明 clone 的目錄限制。若有明確公開例外，回報精確路徑與檢查結果。建立失敗時如實回報部分產物；只有尚未寫入時才能說「未修改」。

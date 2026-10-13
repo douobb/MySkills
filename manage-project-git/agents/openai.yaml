@@ -1,4 +1,4 @@
 interface:
   display_name: "管理專案 Git"
-  short_description: "依風險分級安全初始化與交付 Git，並防止私有文件意外上傳"
-  default_prompt: "使用 $manage-project-git 依風險選擇流程，保護私有文件並安全完成 Git 初始化、提交或推送。"
+  short_description: "安全初始化、提交與推送，檢查私有資訊並在 Git 異常時提出方案"
+  default_prompt: "使用 $manage-project-git 檢查本次變更與私有資訊，依我的要求完成 Git 初始化、提交或推送。"

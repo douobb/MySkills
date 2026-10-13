@@ -1,65 +1,40 @@
 ---
 name: manage-project-git
-description: 依風險分級安全管理專案 Git 初始化、提交與推送。用於第一次 git init、設定初始分支與遠端、建立初始提交，或在既有儲存庫檢查變更、同步文件、掃描敏感資訊與多餘檔案、驗證、精確暫存、提交及上傳。低風險變更採一般模式；首次初始化、不明檔案或高風險變更採加強模式；遇到版本差異、衝突、失敗、機密或混合暫存內容時切換停止模式並由使用者選擇方案。
+description: 安全處理首次 Git 初始化、指定範圍提交與推送，檢查差異、機密、私有路徑與待推送 commits；異常時停止並提供處理方案。
 ---
 
 # 管理專案 Git
 
-依風險載入足夠且不重複的流程。主檔只負責模式選擇與共通底線；各模式完整程序位於 `references/`。
+先確認只初始化、只提交、只推送或提交並推送。只有使用者明確授權才 commit／push；「上傳」授權安全檢查、精確暫存及通過下述提交訊息確認後的 commit／正常非強制 push。保留一次提交訊息確認，其餘已授權正常步驟不重複詢問；只要求檢查／準備時到提交前回報。
 
-## 核心原則
+## 提交訊息與方案確認
 
-- 先確認只初始化、只提交、只推送或提交並推送，不擴大外部變更。
-- 明確要求「上傳」代表授權通過檢查後執行一般暫存、commit 與非強制 push；正常階段不重複詢問。
-- 只處理本次範圍，保留無關修改、分支、tag、remote 與 staged 狀態；只以精確路徑暫存。
-- 掃描只能降低風險，不得保證沒有機密或輸出完整機密值。
-- 不得自動執行 `reset --hard`、`clean`、捨棄修改、刪除分支、`commit --amend`、重寫歷史或強制推送。
+完成必要檢查後，在 commit 前展示建議 commit message、精確提交範圍與推送目標（只提交時標示不推送），優先使用 `request_user_input` 提供「採用建議訊息」「調整訊息」「暫不提交」，允許自由輸入。選擇調整但未提供新訊息時先取得完整內容；未確認不 commit／push。使用者已明確指定本次訊息並要求執行時，視為已確認。只推送既有 commits 不另要求訊息確認。
 
-## 選擇流程與模式
+衝突、分歧或目標不明時同樣優先用 `request_user_input` 選擇具體方案。工具不可用或當前規則不允許該用途時改用一般對話等待；取消、空回答或逾時不構成授權，系統權限批准另依環境規則。確認後若提交範圍、訊息或推送目標實質改變，重新確認受影響部分。
 
-先解析 Git 根目錄。不是儲存庫或要求首次初始化時走流程 A，否則走流程 B。巢狀儲存庫、submodule、worktree 或目標不明時先釐清範圍。
+## 不可退讓的限制
 
-| 模式 | 適用條件 |
-|---|---|
-| 一般模式 | 既有儲存庫、小型且單一目的的文字或原始碼變更、remote 與 upstream 明確，沒有異常 staged 內容或高風險訊號 |
-| 加強模式 | 首次初始化、大量且來源未確認的 untracked 或其他內容不明檔案、二進位／大型／產生檔、環境或認證設定、私有文件、高風險或跨領域程式碼、混合目的變更、未審查 outgoing commits、remote／upstream 不明 |
-| 停止模式 | 疑似機密、無關的既有 staged 內容、detached HEAD、進行中的 Git 操作、衝突、重要驗證失敗、remote 不符、本機落後或雙方分歧，以及認證、權限、hook 或 push 錯誤 |
+- 保留使用者及無關 staged／unstaged 修改，只暫存本次精確範圍。同一檔案有混合修改時隔離本次 hunks；無法安全隔離就停止，不用整檔暫存納入他人修改。
+- 不自動執行 `reset --hard`、`git clean`、捨棄修改、`commit --amend`、歷史重寫、強制推送、刪除分支或 `--no-verify`；不擅改 global 設定、remote、tag 或 release。
+- `TODO.md`、`docs/PRD.md`、`docs/private/` 預設私有，核對 ignored／tracked／staged／outgoing 狀態。一般「全部上傳」不構成公開授權；特定 PRD／TODO 只有明確指定且通過內容檢查才可例外。`docs/private/` 與 HANDOFF 不直接上傳。
+- `.gitignore` 不取消既有追蹤或清除歷史；敏感掃描不能保證發現全部洩漏，不輸出完整機密值。
 
-採用符合任一條件的最高風險模式。不要只因 untracked 檔案的存在或數量自動採加強模式；由本次工作建立、來源與用途明確、內容已檢查且大小正常的小型文字檔，可維持一般模式。其他情況依類型、來源、任務關聯與風險判斷。只要求檢查或準備提交時，在提交前報告後停止。
+## 正常提交與推送
 
-## 必要 Reference
+1. 確認 Git root、branch／HEAD、狀態、差異、進行中的 Git 操作與目標 remote／upstream，界定本次檔案及 hunks。不是儲存庫時只在初始化已授權後讀取 [首次初始化](references/initialize-git.md)；目標不明先釐清。
+2. 審查本次變更與預計納入檔案，檢查私有路徑、憑證、私鑰、API key、token、cookie／session、含帳密 URL／連線字串、個資、客戶資料、內部端點及未公開商業規劃；辨識多餘 log、匯出、備份、快取與產物。既有 secret scanner 優先，沒有時以檔名、模式及內容判讀，不擅自安裝。
+3. 核對受影響的公開文件是否符合目前程式行為，執行相關既有測試／lint／build 與 `git diff --check`。只有使用者要求或交付正確性確實需要時才使用其他 Skill，不因提交全面更新 PRD、TODO、README 或交接。來源不明、二進位、大檔或高風險內容擴大檢查至受影響範圍，不掃描無關 ignored tree、不直接刪除多餘檔案。
+4. 提交前核對有效的 Git 身分與專案簽署規範；精確暫存後審查完整 staged diff、檔案清單及 `git diff --cached --check`。非預期 staged 內容停止，不擅自 unstage 或一併提交。無變更不建立空 commit。commit message 遵循專案慣例，無慣例時使用簡潔繁體中文。
+5. 推送前 fetch 目標 remote 一次，確認目標分支與 ahead／behind，檢查**所有待推送 commits 的差異與新增內容**，包含中間 commit 中曾加入又刪除的機密及私有檔案；不能只掃最終 diff。只推送既有 commit 同樣適用。本機落後、雙方分歧或目標不符時停止。
+6. 檢查通過且遠端可正常 fast-forward 時 push；已有同名遠端分支但缺 upstream 時先確認它是正確目標，缺同名分支時可依明確上傳要求使用 `git push -u <remote> <branch>`。push 後核對遠端分支 HEAD 與本機 HEAD，回報剩餘工作樹。
 
-模式選定後，在執行該模式檢查或任何改變 Git 狀態的動作前，必須完整讀取：
+狀態未變不重複掃描、驗證或 fetch；檔案、index、HEAD 或目標改變時只重跑失效檢查。
 
-- 一般模式：[`references/normal-mode.md`](references/normal-mode.md)
-- 加強模式或流程 A：[`references/enhanced-mode.md`](references/enhanced-mode.md)
-- 任何停止條件：立即停止擴大影響，完整讀取 [`references/stop-mode.md`](references/stop-mode.md) 後回報。
+## 停止條件
 
-Reference 不是選讀摘要。執行中模式改變時先讀取新模式檔案；不要載入未觸發模式的 reference。
-
-## 共通安全與文件底線
-
-至少檢查 `.env`、憑證、私鑰、雲端認證、cookie、session、連線字串、含帳密 URL、API key、token、password、個人或客戶資料、內部端點、商業規劃、未公開 PRD／TODO 與 `docs/private/`。疑似機密立即切換停止模式。
-
-將 `TODO.md`、`docs/PRD.md` 與 `docs/private/` 視為受保護路徑：每次暫存前確認其 ignored／tracked／staged／outgoing 狀態。一般的「全部上傳」不等於公開這些路徑；只有使用者明確指定精確 PRD 或 TODO，且通過內容檢查後才可納入。`docs/private/` 與 `HANDOFF.md` 不得直接上傳，應改寫成去除私有脈絡的公開文件。受保護內容意外已追蹤、暫存或存在於待推送 commit 時切換停止模式。
-
-依條件使用其他可用 Skill：
-
-- 已驗證的功能、指令、設定、限制、版本或結構改變：使用 `$write-project-readme`。
-- `docs/` 含開發紀錄、重複或私有內容：使用 `$manage-project-docs`；需要確認時暫停 Git 流程。
-- 本機 `TODO.md` 狀態改變：使用 `$write-project-todo`，維持忽略且不因同步而上傳。
-- 產品需求確實改變且使用者要求更新：使用 `$write-project-prd`；PRD 預設維持私有與忽略。
-- 空白目錄同時需要專案骨架：先使用 `$initialize-project-structure`，再回到流程 A。
-- 大範圍或高風險程式碼需交付前審查：使用 `$code-review` 產生唯讀結果。
-
-只執行儲存庫既有且與變更相關的驗證。執行 `git diff --check`，提交前另執行 `git diff --cached --check`。不得自行安裝相依套件、變更工具鏈或以 `--no-verify` 掩蓋錯誤。
-
-## 流程路由與檢查失效
-
-- **流程 A**：一律選加強模式；初始化不自動包含骨架、授權、遠端建立、commit 或 push。
-- **流程 B**：先建立精確變更清單，再選一般或加強模式；發現停止條件即切換停止模式。
-- 同一狀態只執行一次相同檢查。只有檔案、index、HEAD、branch、remote 改變，其他 Skill 修改內容、整合或解決衝突、經過較長時間，或外部程序可能改動時，才重新分類並重跑受影響檢查。
+疑似機密、私有文件意外 tracked／staged／outgoing、非預期暫存、detached HEAD、進行中的 Git 操作、衝突、分支分歧、重要驗證失敗、remote 不符、認證／權限／網路／hook／push 錯誤時停止擴大影響。需要處理方案時讀取 [異常處理](references/stop-mode.md)，提出證據、選項與建議，由使用者決定，不自行 pull／merge／rebase 或繞過檢查。
 
 ## 完成回報
 
-簡潔列出模式與動作、branch／remote、新 commit 與納入檔案、敏感及多餘檔案檢查範圍、文件同步、成功或未執行的驗證、push 與本機／遠端一致性，以及剩餘變更或風險。只有已授權動作成功、需要 push 時已驗證遠端一致性，且沒有隱藏風險時才回報完成。
+列出已執行動作、branch／remote、commit、push 結果、敏感與文件檢查範圍、驗證限制及剩餘變更／風險。未成功推送或未核對遠端時不宣稱上傳完成。
